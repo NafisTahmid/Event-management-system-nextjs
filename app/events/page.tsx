@@ -53,7 +53,7 @@ export default function EventsPage() {
               <img
                 src={event.image || "/default-event.jpg"}
                 alt={event.title}
-                className="w-1/2 object-cover"
+                className="w-80 object-cover"
               />
             </figure>
             <div className="card-body">

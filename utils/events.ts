@@ -4,13 +4,15 @@ export interface Event {
   category: string;
   description: string;
   rating: string;
-  price: string;
-  discount:string;
+  price: number;
+  discount:number;
   date: string;
   image?: string; 
+  slots: number,
+  bookedSlots: number,
   bookedBy?: string[]; // Array of user emails
 }
-
+import {getUsers} from "@/utils/auth";
 const EVENT_KEY = "events";
 
 // Safely get all events from localStorage
@@ -49,14 +51,20 @@ export function deleteEvent(id: string): void {
 }
 
 // Update an existing event
-export function updateEvent(updatedEvent: Event): void {
+export async function updateEvent(updatedEvent: Event): Promise<void> {
   const events = getEvents();
   const index = events.findIndex((e) => e.id === updatedEvent.id);
   if (index !== -1) {
     events[index] = updatedEvent;
     saveEvents(events);
+    await fetch(`/api/events/${updatedEvent.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedEvent),
+    });
   }
 }
+
 export function getUserBookings(): Event[] {
   if (typeof window === "undefined") return [];
 
@@ -78,4 +86,51 @@ export function getUserBookings(): Event[] {
     console.error("Error parsing user bookings:", error);
     return [];
   }
+}
+
+export async function bookEvent(event: Event, userEmail: string) {
+  if (event.bookedSlots >= event.slots) {
+    alert("This event is fully booked.");
+    return;
+  }
+
+  if (event.bookedBy?.includes(userEmail)) {
+    alert("You have already booked this event.");
+    return;
+  }
+
+  // 1. Update event info
+  event.bookedSlots += 1;
+  event.slots -= event.bookedSlots;
+  event.bookedBy = [...(event.bookedBy || []), userEmail];
+
+  // 2. Update event in storage and API
+  await updateEvent(event);
+  await fetch(`/api/events/${event.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(event),
+  });
+
+  // 3. Update the user's bookedEvents
+  const users = getUsers();
+  const updatedUsers = users.map((user) => {
+    if (user.email === userEmail) {
+      const alreadyBooked = user.bookedEvents?.includes(event.id);
+      const updatedUser = {
+        ...user,
+        bookedEvents: alreadyBooked
+          ? user.bookedEvents
+          : [...(user.bookedEvents || []), event.id],
+      };
+      // Update currentUser in localStorage too
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      return updatedUser;
+    }
+    return user;
+  });
+
+  localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+  alert("✅ Successfully booked the event!");
 }

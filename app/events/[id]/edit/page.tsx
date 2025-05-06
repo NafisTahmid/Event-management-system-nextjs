@@ -24,32 +24,34 @@ export default function EditEventPage() {
     if (!eventData) return;
 
     // Update localStorage with the new event data
-    const events = JSON.parse(localStorage.getItem("events") || "[]");
-    const updatedEvents = events.map((ev: Event) =>
-      ev.id === eventData.id ? eventData : ev
-    );
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
+    // const events = JSON.parse(localStorage.getItem("events") || "[]");
+    // const updatedEvents = events.map((ev: Event) =>
+    //   ev.id === eventData.id ? eventData : ev
+    // );
+    // localStorage.setItem("events", JSON.stringify(updatedEvents));
 
-    // Send the PUT request to the server to update the JSON file
-    try {
-      const response = await fetch(`/api/events/${eventData.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(eventData),
-      });
+    // // Send the PUT request to the server to update the JSON file
+    // try {
+    //   const response = await fetch(`/api/events/${eventData.id}`, {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(eventData),
+    //   });
 
-      if (!response.ok) {
-        throw new Error("Failed to update the event");
-      }
+    //   if (!response.ok) {
+    //     throw new Error("Failed to update the event");
+    //   }
 
-      // After successful update, redirect the user
-      router.push("/events");
-    } catch (error) {
-      console.error("Error updating event:", error);
-      // Handle any errors, e.g., show an error message to the user
-    }
+    //   // After successful update, redirect the user
+    //   router.push("/events");
+    // } catch (error) {
+    //   console.error("Error updating event:", error);
+    //   // Handle any errors, e.g., show an error message to the user
+    // }
+    updateEvent(eventData);
+    router.push("/events");
   };
 
   return (
@@ -183,6 +185,38 @@ export default function EditEventPage() {
               value={eventData.date}
               onChange={(e) =>
                 setEventData({ ...eventData, date: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-lg font-medium text-gray-700">
+              Slots
+            </label>
+            <input
+              type="number"
+              className="input input-bordered w-full p-3 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600"
+              value={eventData.slots}
+              onChange={(e) =>
+                setEventData({ ...eventData, slots: Number(e.target.value) })
+              }
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-lg font-medium text-gray-700">
+              Booked Slots
+            </label>
+            <input
+              type="number"
+              className="input input-bordered w-full p-3 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600"
+              value={eventData.bookedSlots}
+              onChange={(e) =>
+                setEventData({
+                  ...eventData,
+                  bookedSlots: Number(e.target.value),
+                })
               }
               required
             />

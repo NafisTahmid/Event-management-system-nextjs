@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { getEvents } from "@/utils/events";
-import { getCurrentUser, bookEvent } from "@/utils/auth";
-
+import { getCurrentUser } from "@/utils/auth";
+import { bookEvent } from "@/utils/events";
 type Event = {
   id: string;
   title: string;
@@ -40,18 +40,26 @@ const EventDetails = () => {
     }
   }, [params]);
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     if (!eventData) return;
 
-    const success = bookEvent(eventData.id);
-    if (success) {
-      setIsBooked(true);
-      setMessage("✅ Successfully booked this event!");
-    } else {
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
       setMessage("⚠️ Please log in first to book.");
+      return;
+    }
+
+    await bookEvent(eventData, currentUser.email); // await added
+    setIsBooked(true);
+    setMessage("✅ Successfully booked this event!");
+
+    // Refresh event data
+    const updatedEvents = getEvents();
+    const updatedEvent = updatedEvents.find((e) => e.id === eventData.id);
+    if (updatedEvent) {
+      setEventData(updatedEvent);
     }
   };
-
   if (!eventData) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -92,7 +100,12 @@ const EventDetails = () => {
               {eventData.description}
             </p>
             <p>
-              <span className="font-semibold">Price:</span> {eventData.price}
+              <span className="font-semibold">Discount:</span>$
+              {eventData.discount}
+            </p>
+            <p>
+              <span className="font-semibold">Price:</span>$
+              {eventData.updatedPrice}
             </p>
           </div>
 
@@ -108,8 +121,9 @@ const EventDetails = () => {
             </button>
             {message && <p className="text-success mt-3 text-sm">{message}</p>}
           </div>
+          <p className="text-center">Slots available: {eventData.slots}</p>
 
-          {eventData.bookedBy?.length > 0 && (
+          {/* {eventData.bookedBy?.length > 0 && (
             <div className="mt-6">
               <p className="font-semibold">
                 Booked by ({eventData.bookedBy.length}):
@@ -120,7 +134,7 @@ const EventDetails = () => {
                 ))}
               </ul>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

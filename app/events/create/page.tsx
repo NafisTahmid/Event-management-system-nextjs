@@ -14,6 +14,8 @@ const CreateEventPage = () => {
   const [image, setImage] = useState("");
   const [discount, setDiscount] = useState("");
   const [price, setPrice] = useState("");
+  const [slots, setSlots] = useState(0);
+  const [bookedSlots, setBookedSlots] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,17 +25,20 @@ const CreateEventPage = () => {
       router.push("/login");
       return;
     }
-
+    const discountPrice = Number(price) * (Number(discount) / 100);
+    const updatedPrice = Number(price) - discountPrice;
     const newEvent = {
       id: crypto.randomUUID(),
       title,
       category,
       description,
       rating,
-      price,
+      updatedPrice,
       discount,
       date,
       image,
+      slots,
+      bookedSlots,
     };
 
     const res = await fetch("/api/events", {
@@ -123,6 +128,22 @@ const CreateEventPage = () => {
           className="input input-bordered w-full"
           value={date}
           onChange={(e) => setDate(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Number of slots"
+          className="input input-bordered w-full"
+          value={slots}
+          onChange={(e) => setSlots(Number(e.target.value))}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Number of bookedSlots"
+          className="input input-bordered w-full"
+          value={bookedSlots}
+          onChange={(e) => setBookedSlots(Number(e.target.value))}
           required
         />
         <button type="submit" className="btn btn-success w-full">
