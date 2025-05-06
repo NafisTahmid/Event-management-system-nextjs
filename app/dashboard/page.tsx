@@ -23,18 +23,19 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-        <p className="mb-6">
-          Welcome, <span className="font-semibold">{userEmail}</span>!
-        </p>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
-        >
-          Logout
-        </button>
+    <div className="min-h-screen flex items-center justify-center bg-base-200">
+      <div className="card w-full max-w-md bg-base-100 shadow-xl text-center">
+        <div className="card-body">
+          <h2 className="card-title justify-center text-2xl">Dashboard</h2>
+          <p className="text-lg">
+            Welcome, <span className="font-semibold">{userEmail}</span>!
+          </p>
+          <div className="mt-6">
+            <button onClick={handleLogout} className="btn btn-error">
+              Logout
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -37,13 +37,13 @@ export default function HomePage() {
               <div className="mt-2 flex gap-4">
                 <Link
                   href={`/events/${event.id}/edit`}
-                  className="text-blue-600 hover:underline"
+                  className="text-white py-1 px-3 bg-yellow-500 rounded hover:bg-yellow-600"
                 >
                   Edit
                 </Link>
                 <button
                   onClick={() => handleDelete(event.id)}
-                  className="text-red-600 hover:underline"
+                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                 >
                   Delete
                 </button>

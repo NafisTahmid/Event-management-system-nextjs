@@ -4,7 +4,10 @@ export interface Event {
   category: string;
   description: string;
   rating: string;
+  price: string;
+  discount:string;
   date: string;
+  image?: string; 
   bookedBy?: string[]; // Array of user emails
 }
 
@@ -15,7 +18,7 @@ export const getEvents = (): Event[] => {
   if (typeof window === "undefined") return [];
   try {
     const stored = localStorage.getItem(EVENT_KEY);
-    return stored ? JSON.parse(stored) as Event[] : [];
+    return stored ? (JSON.parse(stored) as Event[]) : [];
   } catch (error) {
     console.error("Error parsing events from localStorage:", error);
     return [];
@@ -52,5 +55,27 @@ export function updateEvent(updatedEvent: Event): void {
   if (index !== -1) {
     events[index] = updatedEvent;
     saveEvents(events);
+  }
+}
+export function getUserBookings(): Event[] {
+  if (typeof window === "undefined") return [];
+
+  const userData = localStorage.getItem("currentUser");
+  if (!userData) return [];
+
+  try {
+    const parsedUser = JSON.parse(userData) as { email: string; bookedEvents?: string[] };
+    const allEvents = getEvents();
+
+    // Find events that match the user's booked event IDs
+    const bookedEvents = (parsedUser.bookedEvents || [])
+      .map((id: string) => allEvents.find((event) => event.id === id))
+      .filter((event): event is Event => event !== undefined);
+    console.log(bookedEvents)
+
+    return bookedEvents;
+  } catch (error) {
+    console.error("Error parsing user bookings:", error);
+    return [];
   }
 }

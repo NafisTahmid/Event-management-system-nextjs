@@ -22,51 +22,57 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm"
-      >
-        <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-base-200">
+      <div className="card w-full max-w-sm bg-base-100 shadow-xl">
+        <form onSubmit={handleLogin} className="card-body">
+          <h2 className="text-2xl font-bold text-center">Login</h2>
 
-        {error && (
-          <div className="bg-red-100 text-red-700 p-2 mb-4 rounded">
-            {error}
+          {error && (
+            <div className="alert alert-error shadow-sm mt-2">
+              <span>{error}</span>
+            </div>
+          )}
+
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="input input-bordered"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
-        )}
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 border border-gray-300 rounded mb-3"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="input input-bordered"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 border border-gray-300 rounded mb-3"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <div className="form-control mt-6">
+            <button className="btn btn-primary">Log In</button>
+          </div>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white py-2 px-4 w-full rounded hover:bg-blue-700"
-        >
-          Log In
-        </button>
-
-        <p className="text-sm text-center mt-4">
-          Don't have an account?{" "}
-          <a href="/signup" className="text-blue-600 hover:underline">
-            Sign up
-          </a>
-        </p>
-      </form>
+          <p className="text-sm text-center mt-2">
+            Don't have an account?{" "}
+            <a href="/signup" className="text-primary hover:underline">
+              Sign up
+            </a>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };

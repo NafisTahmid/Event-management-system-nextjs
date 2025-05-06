@@ -17,45 +17,51 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleSignup}
-        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm"
-      >
-        <h1 className="text-2xl font-bold mb-4 text-center">Sign Up</h1>
+    <div className="min-h-screen flex items-center justify-center bg-base-200">
+      <div className="card w-full max-w-sm bg-base-100 shadow-xl">
+        <form onSubmit={handleSignup} className="card-body">
+          <h2 className="text-2xl font-bold text-center">Sign Up</h2>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 border border-gray-300 rounded mb-3"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="input input-bordered"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 border border-gray-300 rounded mb-3"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="input input-bordered"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white py-2 px-4 w-full rounded hover:bg-blue-700"
-        >
-          Sign Up
-        </button>
+          <div className="form-control mt-6">
+            <button className="btn btn-primary">Sign Up</button>
+          </div>
 
-        <p className="text-sm text-center mt-4">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">
-            Log in
-          </a>
-        </p>
-      </form>
+          <p className="text-sm text-center mt-2">
+            Already have an account?{" "}
+            <a href="/login" className="text-primary hover:underline">
+              Log in
+            </a>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };
