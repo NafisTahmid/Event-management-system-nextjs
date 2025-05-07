@@ -1,25 +1,7 @@
 [
   {
-    "id": "e396a747-c524-4533-a492-e6c0dad5fb25",
-    "title": "Australian Open updated new 22",
-    "category": "Sports",
-    "description": "The Australian Open is a tennis tournament organised by Tennis Australia annually at Melbourne Park in Melbourne, Victoria, Australia. It is chronologically the first of the four Grand Slam tennis events every year, held before the French Open, Wimbledon and the US Open.",
-    "rating": "4.2",
-    "price": "799",
-    "discount": "15",
-    "date": "2025-05-15",
-    "image": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Australian_Open_Logo_2017.svg",
-    "bookedSlots": 1,
-    "bookedBy": [
-      "carol@test.com",
-      "bob@test.com",
-      "spidy@test.com"
-    ],
-    "slots": 0
-  },
-  {
     "id": "3075e06a-2139-4851-aeb0-4132189c906d",
-    "title": "Avenged Sevenfold concert",
+    "title": "Avenged Sevenfold concert updated",
     "category": "music",
     "description": "Rock and roll, heavy metal, metalcore...",
     "rating": "4.9",
@@ -55,7 +37,7 @@
   },
   {
     "id": "caec453e-48fd-49b2-84d4-e1faf59ea8d1",
-    "title": "Fifa world cup 2026",
+    "title": "Fifa world cup 2026 new",
     "category": "sports",
     "description": "The greatest show on earth.",
     "rating": "3.9",

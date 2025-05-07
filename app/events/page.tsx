@@ -43,43 +43,51 @@ export default function EventsPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-4xl font-bold text-center mb-10">Available Events</h1>
+    // <section className="md:h-full flex items-center text-gray-600">
+    //   <h1 className="text-4xl font-bold text-center mb-10">Available Events</h1>
 
-      <div className="flex flex-wrap justify-center gap-8">
-        {events.map((event) => (
-          <div key={event.id} className="card w-80 bg-base-100 shadow-xl">
-            <figure>
-              <img
-                src={event.image || "/default-event.jpg"}
-                alt={event.title}
-                className="w-80 object-cover"
-              />
-            </figure>
-            <div className="card-body">
-              <Link href={`/events/event-details/${event.id}`}>
-                <h2 className="card-title">{event.title}</h2>
-              </Link>
-              <p className="text-sm text-gray-500">{event.date}</p>
-              <p>{event.description}</p>
-              <div className="card-actions justify-end mt-4">
-                <button
-                  className="btn btn-warning btn-sm"
-                  onClick={() => handleEdit(event.id)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-error btn-sm"
-                  onClick={() => handleDelete(event.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
+    //   <div className="flex flex-wrap justify-center gap-8">
+    //     {events.map((event) => (
+    //       <div key={event.id} className="card w-80 bg-base-100 shadow-xl">
+    //         <figure>
+    //           <img
+    //             src={event.image || "/default-event.jpg"}
+    //             alt={event.title}
+    //             className="w-80 object-cover"
+    //           />
+    //         </figure>
+    //         <div className="card-body">
+    //           <Link href={`/events/event-details/${event.id}`}>
+    //             <h2 className="card-title">{event.title}</h2>
+    //           </Link>
+    //           <p className="text-sm text-gray-500">{event.date}</p>
+    //           <p>{event.description}</p>
+    //           <div className="card-actions justify-end mt-4">
+    //             <button
+    //               className="btn btn-warning btn-sm"
+    //               onClick={() => handleEdit(event.id)}
+    //             >
+    //               Edit
+    //             </button>
+    //             <button
+    //               className="btn btn-error btn-sm"
+    //               onClick={() => handleDelete(event.id)}
+    //             >
+    //               Delete
+    //             </button>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     ))}
+    //   </div>
+    // </section>
+    <section className="md:h-full flex items-center text-gray-600">
+      <div className="container px-5 py-24 mx-auto">
+          <div className="text-center mb-12">
+              <h5 className="text-base md:text-lg text-indigo-700 mb-1">See our recent Events</h5>
+              <h1 className="text-4xl md:text-6xl text-yellow-700 font-semibold">Accelx Recent Events</h1>
           </div>
-        ))}
       </div>
-    </div>
+    </section>
   );
 }
