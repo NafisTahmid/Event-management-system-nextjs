@@ -1,13 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import Link from "next/link";
 import { getEvents, deleteEvent, Event } from "@/utils/events";
 import { useRouter } from "next/navigation";
+import { Button } from "@/app/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
+
+import { Input } from "@/app/components/ui/input";
+import { ScrollArea } from "@/app/components/ui/scroll-area";
+
+import {
+  X,
+  MessageCircle,
+  Send,
+  Loader2,
+  ArrowDownCircleIcon,
+} from "lucide-react";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { useChat } from "@ai-sdk/client";
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const router = useRouter();
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showChatIcon, setShowChatIcon] = useState(false);
+  const chatIconRef = useRef<HTMLButtonElement>(null);
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    stop,
+    reload,
+    error,
+  } = useChat({ api: "/api/gemini" });
 
   useEffect(() => {
     const fetchedEvents = getEvents();
@@ -16,8 +53,26 @@ export default function EventsPage() {
     //   const allEvents = await res.json();
     // }
     setEvents(fetchedEvents);
-    // fetchEvents();
+
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShowChatIcon(true);
+      } else {
+        setShowChatIcon(false);
+        setIsChatOpen(false);
+      }
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+
+  const toggleChat = () => {
+    setIsChatOpen(!isChatOpen);
+  };
 
   const handleDelete = async (id: string) => {
     const confirmDelete = confirm(
@@ -118,6 +173,82 @@ export default function EventsPage() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Chatbot icon */}
+      <div className="flex flex-col min-h-screen">
+        <AnimatePresence>
+          {showChatIcon && (
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 100 }}
+              transition={{ duration: 0.2 }}
+              className="fixed bottom-4 right-4 z-50"
+            >
+              <Button
+                onClick={toggleChat}
+                className="rounded-full size-14 p-2 shadow-lg"
+                ref={chatIconRef}
+                size="icon"
+              >
+                {!isChatOpen ? (
+                  <MessageCircle className="size-12" />
+                ) : (
+                  <ArrowDownCircleIcon />
+                )}
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {isChatOpen && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 1, scale: 0.8 }}
+              transition={{ duration: 0.2 }}
+              className="fixed bottom-20 right-4 z-50 w-[95%] md:w-[500px]"
+            >
+              <Card className="border-2">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                  <CardTitle className="text-lg font-medium">
+                    Chat with Accelx AI
+                  </CardTitle>
+                  <Button
+                    onClick={toggleChat}
+                    className="rounded-full size-14 p-2 shadow-lg"
+                    size="icon"
+                    variant="ghost"
+                  >
+                    <X className="size-12" />
+                    <span className="sr-only">Close chat</span>
+                  </Button>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <ScrollArea className="h-[300px] pr-4">
+                    <div className="w-full mt-32 text-gray-500 items-center justify-center flex gap-3 text-black font-bold">
+                      No messages yet.
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+                <CardFooter>
+                  <form
+                    onSubmit={handleSubmit}
+                    className="flex w-full items-center space-x-2"
+                  >
+                    <input
+                      value={input}
+                      onChange={handleInputChange}
+                      className="flex-1"
+                      placeholder="Type your message here"
+                    />
+                  </form>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
