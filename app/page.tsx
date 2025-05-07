@@ -20,7 +20,7 @@ export default function HomePage() {
   };
 
   return (
-    <main className="max-w-4xl mx-auto p-6">
+    <main className="max-w-4xl mx-auto p-6 h-screen">
       <h1 className="text-3xl font-bold mb-6">All Events</h1>
       {events.length === 0 ? (
         <p className="text-gray-600">No events found.</p>

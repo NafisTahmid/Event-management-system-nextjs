@@ -85,8 +85,8 @@ const Navbar = () => {
         <div className="container flex justify-evenly items-center py-8">
           {/* Logo section */}
           <div className="text-2xl flex items-center gap-2 font-bold py-8 uppercase">
-            <MdEventAvailable />
-            <p>Accelx</p>
+            <MdEventAvailable className="text-indigo-700" />
+            <p className="text-indigo-700">Accelx</p>
             <p className="text-yellow-600">Events</p>
           </div>
           {/* Menu section */}
@@ -140,7 +140,7 @@ const Navbar = () => {
           </div>
           {/* Icons section */}
           <div className="hidden md:block items-center gap-4 ">
-            { isLoggedIn ? (
+            {isLoggedIn ? (
               <>
                 <button className="text-2xl hover:bg-yellow-600 hover:text-white rounded-full p-2 duration-200">
                   <CgProfile />
@@ -152,8 +152,7 @@ const Navbar = () => {
                   Logout
                 </button>
               </>
-            
-            ) :
+            ) : (
               <>
                 <li>
                   <Link
@@ -170,8 +169,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               </>
-            }
-           
+            )}
           </div>
           {/* Mobile hamburger menu section */}
           <div className="md:hidden" onClick={() => setOpen(!open)}>
