@@ -1,56 +1,60 @@
 [
   {
-    "id": "3075e06a-2139-4851-aeb0-4132189c906d",
-    "title": "Avenged Sevenfold concert updated",
-    "category": "music",
-    "description": "Rock and roll, heavy metal, metalcore...",
-    "rating": "4.9",
-    "updatedPrice": 629.1,
-    "discount": "10",
-    "date": "2025-06-06",
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4Nw8aqufpjjXCXUJAMuRrSv8lAX6CucdXzA&s",
-    "bookedSlots": 1,
-    "bookedBy": [
-      "carol@test.com",
-      "spidy@test.com"
-    ],
-    "price": "599",
-    "slots": 0
-  },
-  {
-    "id": "e985d26d-9b44-43d7-b9fc-6f627d1fbc8d",
-    "title": "Cricket World cup",
-    "category": "sports",
-    "description": "The biggest event of cricket.",
-    "rating": "4.1",
-    "updatedPrice": 474.05,
-    "discount": "15",
-    "date": "2025-06-05",
-    "image": "https://cricxtasy.com/wp-content/uploads/2024/10/28e6ce7dd04358a0caddc31f0a802d07-scaled.webp",
-    "slots": 32,
-    "bookedSlots": 32,
-    "bookedBy": [
-      "carol@test.com",
-      "bob@test.com"
-    ],
-    "price": "799"
-  },
-  {
-    "id": "caec453e-48fd-49b2-84d4-e1faf59ea8d1",
-    "title": "Fifa world cup 2026 new",
+    "id": "edff4fc3-3e8b-452c-9068-91a3a64690d3",
+    "title": "Fifa world cup 2026",
     "category": "sports",
     "description": "The greatest show on earth.",
-    "rating": "3.9",
-    "updatedPrice": 719.2,
-    "discount": "20",
-    "date": "2026-07-06",
-    "image": "https://cdn.siasat.com/wp-content/uploads/2023/10/FIFA-World-Cup-1.jpg",
-    "slots": 22,
-    "bookedSlots": 1,
+    "rating": "4",
+    "updatedPrice": 679.15,
+    "discount": "15",
+    "date": "2026-06-07",
+    "image": "https://www.aljazeera.com/wp-content/uploads/2023/03/32CM8HP-highres.jpg?resize=1800%2C1800",
+    "slots": 2,
+    "bookedSlots": 8,
+    "price": "599",
     "bookedBy": [
-      "bob@test.com",
-      "spidy@test.com"
-    ],
-    "price": "699"
+      "bob@test.com"
+    ]
+  },
+  {
+    "id": "3a165018-f98f-46c7-9bf0-dc3363d7e165",
+    "title": "UFC payperview",
+    "category": "sports",
+    "description": "Ultimate fighting championship",
+    "rating": "4",
+    "updatedPrice": 449.1,
+    "discount": "10",
+    "date": "2025-05-28",
+    "image": "https://www.combatarena.net/cdn/shop/articles/categorie_di_peso_ufc.jpg?v=1735835895",
+    "slots": 6,
+    "bookedSlots": 2,
+    "price": "499"
+  },
+  {
+    "id": "54933832-f998-44c8-bd6b-9380e21d5c59",
+    "title": "Mission Impossible Launch",
+    "category": "entertainment",
+    "description": "The last part of the series.",
+    "rating": "4.2",
+    "updatedPrice": 379.05,
+    "discount": "5",
+    "date": "2025-05-30",
+    "image": "https://www.rollingstone.com/wp-content/uploads/2022/01/MCDMIIM_EC212.jpg?w=1581&h=1054&crop=1",
+    "slots": 17,
+    "bookedSlots": 7
+  },
+  {
+    "id": "71d16f9b-1baf-42db-aad5-0d63cc1e2aff",
+    "title": "Slipknot concert",
+    "category": "sports",
+    "description": "American heavy metal band Slipknot.",
+    "rating": "4",
+    "updatedPrice": 105.45,
+    "discount": "5",
+    "date": "2025-05-30",
+    "image": "https://pbs.twimg.com/profile_images/1734134159050997760/yvzguO2D_400x400.jpg",
+    "slots": 16,
+    "bookedSlots": 10,
+    "price": "199"
   }
 ]

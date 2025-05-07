@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { getEvents, bookEvent } from "@/utils/events";
+import { deleteEvent, setEvents, getEvents, bookEvent } from "@/utils/events";
 import { getCurrentUser } from "@/utils/auth";
+import Link from "next/link";
 
 import type { Event } from "@/interfaces/event"; // Optional, depending on your structure
 
@@ -30,6 +31,24 @@ const EventDetails = () => {
       router.push("/events");
     }
   }, [params]);
+
+  const handleDelete = async (id: string) => {
+    const confirmDelete = confirm(
+      "Are you sure you want to delete this event?"
+    );
+    if (confirmDelete) {
+      const response = await fetch(`/api/events/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        deleteEvent(id);
+        setEvents(getEvents());
+        router.push("/events");
+      }
+    } else {
+      alert("Failed to delete");
+    }
+  };
 
   const handleBooking = async () => {
     if (!eventData) return;
@@ -101,6 +120,20 @@ const EventDetails = () => {
           <span className="font-semibold">Slots available:</span>{" "}
           {availableSlots}
         </p>
+        <div className="flex flex-start">
+          <Link
+            href={`/events/${eventData.id}/edit/`}
+            className="px-5 py-2 bg-yellow-600 text-white rounded-lg"
+          >
+            Edit
+          </Link>
+          <button
+            onClick={() => handleDelete(eventData.id)}
+            className="px-5 py-2 bg-red-600 text-white rounded-lg ms-2"
+          >
+            Delete
+          </button>
+        </div>
 
         <div className="pt-6">
           <button

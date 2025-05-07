@@ -12,7 +12,6 @@ const LoginPage = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
     const success = loginUser(email, password);
     if (success) {
       router.push("/dashboard");
@@ -22,58 +21,66 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200">
-      <div className="card w-full max-w-sm bg-base-100 shadow-xl">
-        <form onSubmit={handleLogin} className="card-body">
-          <h2 className="text-2xl font-bold text-center">Login</h2>
+    <main className="min-h-screen flex items-center justify-center  px-4">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+        <h2 className="text-3xl font-bold text-center text-yellow-700 mb-6">
+          Login
+        </h2>
 
-          {error && (
-            <div className="alert alert-error shadow-sm mt-2">
-              <span>{error}</span>
-            </div>
-          )}
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-400 rounded text-sm">
+            {error}
+          </div>
+        )}
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Email</span>
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
             </label>
             <input
               type="email"
-              placeholder="Enter your email"
-              className="input input-bordered"
+              placeholder="you@example.com"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-yellow-400 focus:ring-2 focus:outline-none"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Password</span>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
             </label>
             <input
               type="password"
-              placeholder="Enter your password"
-              className="input input-bordered"
+              placeholder="••••••••"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-yellow-400 focus:ring-2 focus:outline-none"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
 
-          <div className="form-control mt-6">
-            <button className="btn btn-primary">Log In</button>
-          </div>
-
-          <p className="text-sm text-center mt-2">
-            Don't have an account?{" "}
-            <a href="/signup" className="text-primary hover:underline">
-              Sign up
-            </a>
-          </p>
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 rounded-md transition"
+          >
+            Log In
+          </button>
         </form>
+
+        <p className="text-center text-sm mt-5">
+          Don&apos;t have an account?{" "}
+          <a
+            href="/signup"
+            className="text-yellow-600 hover:underline font-medium"
+          >
+            Sign up
+          </a>
+        </p>
       </div>
-    </div>
+    </main>
   );
 };
 

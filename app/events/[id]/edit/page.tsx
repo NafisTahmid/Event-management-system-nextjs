@@ -57,13 +57,13 @@ export default function EditEventPage() {
   return (
     <div className="max-w-xl mx-auto p-6 rounded-lg shadow-lg mt-8">
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-white">Edit Event</h1>
+        <h1 className="text-3xl font-bold text-yellow-600">Edit Event</h1>
       </div>
 
       {eventData && (
         <form
           onSubmit={handleSubmit}
-          className="card bg-base-100 shadow-lg p-6 space-y-4"
+          className="text-black bg-base-100 shadow-lg p-6 space-y-4"
         >
           <div>
             <label className="block text-lg font-medium text-gray-700">
@@ -72,7 +72,7 @@ export default function EditEventPage() {
             <input
               type="text"
               placeholder="Enter event title"
-              className="input input-bordered w-full p-3 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600"
+              className="input input-bordered w-full p-3 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 text-yellow"
               value={eventData.title}
               onChange={(e) =>
                 setEventData({ ...eventData, title: e.target.value })
@@ -224,7 +224,7 @@ export default function EditEventPage() {
 
           <button
             type="submit"
-            className="btn btn-success w-full py-3 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="btn bg-yellow-700 w-full py-3 text-white rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-green-600"
           >
             Update Event
           </button>

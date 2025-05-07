@@ -17,52 +17,60 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200">
-      <div className="card w-full max-w-sm bg-base-100 shadow-xl">
-        <form onSubmit={handleSignup} className="card-body">
-          <h2 className="text-2xl font-bold text-center">Sign Up</h2>
+    <main className="min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+        <h2 className="text-3xl font-bold text-center text-yellow-700 mb-6">
+          Sign Up
+        </h2>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Email</span>
+        <form onSubmit={handleSignup} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
             </label>
             <input
               type="email"
               placeholder="Enter your email"
-              className="input input-bordered"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-yellow-400 focus:ring-2 focus:outline-none"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Password</span>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
             </label>
             <input
               type="password"
               placeholder="Enter your password"
-              className="input input-bordered"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-yellow-400 focus:ring-2 focus:outline-none"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
 
-          <div className="form-control mt-6">
-            <button className="btn btn-primary">Sign Up</button>
-          </div>
-
-          <p className="text-sm text-center mt-2">
-            Already have an account?{" "}
-            <a href="/login" className="text-primary hover:underline">
-              Log in
-            </a>
-          </p>
+          <button
+            type="submit"
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 rounded-md transition"
+          >
+            Sign Up
+          </button>
         </form>
+
+        <p className="text-center text-sm mt-5">
+          Already have an account?{" "}
+          <a
+            href="/login"
+            className="text-yellow-700 hover:underline font-medium"
+          >
+            Log in
+          </a>
+        </p>
       </div>
-    </div>
+    </main>
   );
 };
 
