@@ -72,7 +72,7 @@ export default function EditEventPage() {
             <input
               type="text"
               placeholder="Enter event title"
-              className="input input-bordered w-full p-3 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 text-yellow"
+              className="input input-bordered w-full p-3 mt-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600"
               value={eventData.title}
               onChange={(e) =>
                 setEventData({ ...eventData, title: e.target.value })

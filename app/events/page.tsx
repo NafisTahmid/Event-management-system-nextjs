@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useChat } from "@ai-sdk/client";
+import { useChat } from "@ai-sdk/react";
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -227,9 +227,89 @@ export default function EventsPage() {
                 </CardHeader>
                 <CardContent className="p-0">
                   <ScrollArea className="h-[300px] pr-4">
-                    <div className="w-full mt-32 text-gray-500 items-center justify-center flex gap-3 text-black font-bold">
-                      No messages yet.
-                    </div>
+                    {messages?.length === 0 && (
+                      <div className="w-full mt-32 text-gray-500 items-center justify-center flex gap-3 text-black font-bold">
+                        No messages yet.
+                      </div>
+                    )}
+                    {messages?.map((message, index) => (
+                      <div
+                        key={index}
+                        className={`mb-4 ${
+                          message.role === "user" ? "text-right" : "text-left"
+                        }`}
+                      >
+                        <div
+                          className={`inline-block rounded-g ${
+                            message.role === "user"
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted"
+                          }`}
+                        >
+                          <ReactMarkdown
+                            children={message.content}
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              code({
+                                node,
+                                inline,
+                                className,
+                                children,
+                                ...props
+                              }) {
+                                return inline ? (
+                                  <code
+                                    {...props}
+                                    className="bg-gray-200 px-1 rounded"
+                                  >
+                                    {children}
+                                  </code>
+                                ) : (
+                                  <pre
+                                    {...props}
+                                    className="bg-gray-200 px-1 rounded"
+                                  >
+                                    <code>{children}</code>
+                                  </pre>
+                                );
+                              },
+                              ul: ({children}) => (
+                                <ul className="list-disc pl-4 space-y-1">
+                                  {children}
+                                </ul>
+                              ),
+                              ol: ({children}) => (
+                                <li>{children}</li>
+                              )
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                    {isLoading && (
+                      <div className="w-full items-center flex justify-center gap-3">
+                        <Loader2 className="animate-spin w-5 h-5 text-primary" />
+                        <button
+                          className="underline"
+                          type="button"
+                          onClick={() => stop()}
+                        >
+                          Abort
+                        </button>
+                      </div>
+                    )}
+                    {error && (
+                      <div className="w-full items-center flex justify-center gap-3">
+                        <div>An error occurred :'(</div>
+                        <button
+                          className="underline"
+                          type="button"
+                          onClick={() => reload()}
+                        >
+                          Retry
+                        </button>
+                      </div>
+                    )}
                   </ScrollArea>
                 </CardContent>
                 <CardFooter>
@@ -243,6 +323,14 @@ export default function EventsPage() {
                       className="flex-1"
                       placeholder="Type your message here"
                     />
+                    <Button
+                      type="submit"
+                      className="size-9"
+                      disabled={isLoading}
+                      size="icon"
+                    >
+                      <Send className="size-4" />
+                    </Button>
                   </form>
                 </CardFooter>
               </Card>
