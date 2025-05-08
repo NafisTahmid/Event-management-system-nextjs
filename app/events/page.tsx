@@ -14,10 +14,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/components/ui/card";
-
 import { Input } from "@/app/components/ui/input";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
-
 import {
   X,
   MessageCircle,
@@ -25,7 +23,6 @@ import {
   Loader2,
   ArrowDownCircleIcon,
 } from "lucide-react";
-
 import { motion, AnimatePresence } from "framer-motion";
 import { useChat } from "@ai-sdk/react";
 
@@ -35,6 +32,7 @@ export default function EventsPage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showChatIcon, setShowChatIcon] = useState(false);
   const chatIconRef = useRef<HTMLButtonElement>(null);
+
   const {
     messages,
     input,
@@ -48,10 +46,6 @@ export default function EventsPage() {
 
   useEffect(() => {
     const fetchedEvents = getEvents();
-    // async function fetchEvents() {
-    //   const res = await fetch("/api/events");
-    //   const allEvents = await res.json();
-    // }
     setEvents(fetchedEvents);
 
     const handleScroll = () => {
@@ -62,6 +56,7 @@ export default function EventsPage() {
         setIsChatOpen(false);
       }
     };
+
     handleScroll();
     window.addEventListener("scroll", handleScroll);
 
@@ -86,56 +81,17 @@ export default function EventsPage() {
         deleteEvent(id);
         setEvents(getEvents());
         router.push("/events");
+      } else {
+        alert("Failed to delete");
       }
-    } else {
-      alert("Failed to delete");
     }
   };
 
   const handleEdit = (id: string) => {
-    console.log(id);
     router.push(`/events/${id}/edit`);
   };
 
   return (
-    // <section className="md:h-full flex items-center text-gray-600">
-    //   <h1 className="text-4xl font-bold text-center mb-10">Available Events</h1>
-
-    //   <div className="flex flex-wrap justify-center gap-8">
-    //     {events.map((event) => (
-    //       <div key={event.id} className="card w-80 bg-base-100 shadow-xl">
-    //         <figure>
-    //           <img
-    //             src={event.image || "/default-event.jpg"}
-    //             alt={event.title}
-    //             className="w-80 object-cover"
-    //           />
-    //         </figure>
-    //         <div className="card-body">
-    //           <Link href={`/events/event-details/${event.id}`}>
-    //             <h2 className="card-title">{event.title}</h2>
-    //           </Link>
-    //           <p className="text-sm text-gray-500">{event.date}</p>
-    //           <p>{event.description}</p>
-    //           <div className="card-actions justify-end mt-4">
-    //             <button
-    //               className="btn btn-warning btn-sm"
-    //               onClick={() => handleEdit(event.id)}
-    //             >
-    //               Edit
-    //             </button>
-    //             <button
-    //               className="btn btn-error btn-sm"
-    //               onClick={() => handleDelete(event.id)}
-    //             >
-    //               Delete
-    //             </button>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     ))}
-    //   </div>
-    // </section>
     <section className="md:h-full flex items-center text-gray-600">
       <div className="container px-5 py-10 mx-auto">
         <div className="text-center mb-12">
@@ -159,7 +115,9 @@ export default function EventsPage() {
                   <h2 className="text-yellow-600 font-medium mb-1 text-2xl">
                     {event.title}
                   </h2>
-                  <p>{event.description.split(" ").slice(1, 5).join(" ")}...</p>
+                  <p>
+                    {event.description.split(" ").slice(0, 20).join(" ")}...
+                  </p>
                   <div className="flex items-center flex-wrap">
                     <Link
                       href={`/events/event-details/${event.id}`}
@@ -201,6 +159,7 @@ export default function EventsPage() {
             </motion.div>
           )}
         </AnimatePresence>
+
         <AnimatePresence>
           {isChatOpen && (
             <motion.div
@@ -232,60 +191,70 @@ export default function EventsPage() {
                         No messages yet.
                       </div>
                     )}
-                    {messages?.map((message, index) => (
-                      <div
-                        key={index}
-                        className={`mb-4 ${
-                          message.role === "user" ? "text-right" : "text-left"
-                        }`}
-                      >
+                    {messages?.map((message, index) => {
+                      const contentText =
+                        typeof message.content === "string"
+                          ? message.content
+                          : message.content?.parts?.[0]?.text ?? "";
+
+                      return (
                         <div
-                          className={`inline-block rounded-g ${
-                            message.role === "user"
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-muted"
+                          key={index}
+                          className={`mb-4 ${
+                            message.role === "user" ? "text-right" : "text-left"
                           }`}
                         >
-                          <ReactMarkdown
-                            children={message.content}
-                            remarkPlugins={[remarkGfm]}
-                            components={{
-                              code({
-                                node,
-                                inline,
-                                className,
-                                children,
-                                ...props
-                              }) {
-                                return inline ? (
-                                  <code
-                                    {...props}
-                                    className="bg-gray-200 px-1 rounded"
-                                  >
+                          <div
+                            className={`inline-block rounded-g p-2 ${
+                              message.role === "user"
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-muted"
+                            }`}
+                          >
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                code({
+                                  node,
+                                  inline,
+                                  className,
+                                  children,
+                                  ...props
+                                }) {
+                                  return inline ? (
+                                    <code
+                                      {...props}
+                                      className="bg-gray-200 px-1 rounded"
+                                    >
+                                      {children}
+                                    </code>
+                                  ) : (
+                                    <pre
+                                      {...props}
+                                      className="bg-gray-200 px-1 rounded"
+                                    >
+                                      <code>{children}</code>
+                                    </pre>
+                                  );
+                                },
+                                ul: ({ children }) => (
+                                  <ul className="list-disc pl-4 space-y-1">
                                     {children}
-                                  </code>
-                                ) : (
-                                  <pre
-                                    {...props}
-                                    className="bg-gray-200 px-1 rounded"
-                                  >
-                                    <code>{children}</code>
-                                  </pre>
-                                );
-                              },
-                              ul: ({children}) => (
-                                <ul className="list-disc pl-4 space-y-1">
-                                  {children}
-                                </ul>
-                              ),
-                              ol: ({children}) => (
-                                <li>{children}</li>
-                              )
-                            }}
-                          />
+                                  </ul>
+                                ),
+                                ol: ({ children }) => (
+                                  <ol className="list-decimal ml-4">
+                                    {children}
+                                  </ol>
+                                ),
+                              }}
+                            >
+                              {contentText}
+                            </ReactMarkdown>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                     {isLoading && (
                       <div className="w-full items-center flex justify-center gap-3">
                         <Loader2 className="animate-spin w-5 h-5 text-primary" />
@@ -317,7 +286,7 @@ export default function EventsPage() {
                     onSubmit={handleSubmit}
                     className="flex w-full items-center space-x-2"
                   >
-                    <input
+                    <Input
                       value={input}
                       onChange={handleInputChange}
                       className="flex-1"
