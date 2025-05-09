@@ -1,60 +1,16 @@
 [
   {
-    "id": "edff4fc3-3e8b-452c-9068-91a3a64690d3",
+    "id": "08b6645f-df49-42a0-a0bc-23651944b849",
     "title": "Fifa world cup 2026",
     "category": "sports",
-    "description": "The greatest show on earth.",
-    "rating": "4",
-    "updatedPrice": 679.15,
-    "discount": "15",
-    "date": "2026-06-07",
-    "image": "https://www.aljazeera.com/wp-content/uploads/2023/03/32CM8HP-highres.jpg?resize=1800%2C1800",
-    "slots": 2,
-    "bookedSlots": 8,
-    "price": "599",
-    "bookedBy": [
-      "bob@test.com"
-    ]
-  },
-  {
-    "id": "3a165018-f98f-46c7-9bf0-dc3363d7e165",
-    "title": "UFC payperview",
-    "category": "sports",
-    "description": "Ultimate fighting championship",
-    "rating": "4",
-    "updatedPrice": 449.1,
-    "discount": "10",
-    "date": "2025-05-28",
-    "image": "https://www.combatarena.net/cdn/shop/articles/categorie_di_peso_ufc.jpg?v=1735835895",
-    "slots": 6,
-    "bookedSlots": 2,
-    "price": "499"
-  },
-  {
-    "id": "54933832-f998-44c8-bd6b-9380e21d5c59",
-    "title": "Mission Impossible Launch",
-    "category": "entertainment",
-    "description": "The last part of the series.",
+    "description": "The greatest show on earth",
     "rating": "4.2",
-    "updatedPrice": 379.05,
-    "discount": "5",
+    "updatedPrice": 72.96,
+    "discount": "4",
     "date": "2025-05-30",
-    "image": "https://www.rollingstone.com/wp-content/uploads/2022/01/MCDMIIM_EC212.jpg?w=1581&h=1054&crop=1",
-    "slots": 17,
-    "bookedSlots": 7
-  },
-  {
-    "id": "71d16f9b-1baf-42db-aad5-0d63cc1e2aff",
-    "title": "Slipknot concert",
-    "category": "sports",
-    "description": "American heavy metal band Slipknot.",
-    "rating": "4",
-    "updatedPrice": 105.45,
-    "discount": "5",
-    "date": "2025-05-30",
-    "image": "https://pbs.twimg.com/profile_images/1734134159050997760/yvzguO2D_400x400.jpg",
-    "slots": 16,
-    "bookedSlots": 10,
-    "price": "199"
+    "image": "https://cdn.siasat.com/wp-content/uploads/2023/10/FIFA-World-Cup-1.jpg",
+    "slots": 83,
+    "bookedSlots": 17,
+    "price": "699"
   }
 ]

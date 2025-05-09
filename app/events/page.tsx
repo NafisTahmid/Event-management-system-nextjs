@@ -1,8 +1,9 @@
 "use client";
-
+import qaData from "@/data/qa.json";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 import {
   X,
   MessageCircle,
@@ -29,9 +30,16 @@ import { ScrollArea } from "@/app/components/ui/scroll-area";
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isChatOpenTwo, setIsChatOpenTwo] = useState(false);
   const [showChatIcon, setShowChatIcon] = useState(false);
+  const [showChatIconTwo, setShowChatIconTwo] = useState(false);
   const router = useRouter();
   const chatIconRef = useRef<HTMLButtonElement>(null);
+
+  // For chatbot two
+  const [inputTwo, setInputTwo] = useState("");
+  const [messagesTwo, setMessagesTwo] = useState<{ role: "user" | "ai"; content: string }[]>([]);
+
 
   const {
     messages,
@@ -54,10 +62,20 @@ export default function EventsPage() {
         setShowChatIcon(false);
         setIsChatOpen(false);
       }
+
+      if(window.scrollY < 100) {
+        setShowChatIconTwo(true);
+      } else {
+        setShowChatIconTwo(false);
+        setIsChatOpenTwo(false);
+      }
     };
+
+
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -78,6 +96,35 @@ export default function EventsPage() {
   };
 
   const toggleChat = () => setIsChatOpen(!isChatOpen);
+  const toggleChatTwo = () => setIsChatOpenTwo(!isChatOpenTwo);
+
+  const handleInputChangeTwo = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputTwo(e.target.value);
+  };
+
+  const handleSubmitTwo = (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!inputTwo.trim()) return;
+    
+      const userMessage = inputTwo.trim();
+      setMessagesTwo((prev) => [...prev, { role: "user", content: userMessage }]);
+   
+      setInputTwo("");
+    
+      const match = qaData.find(
+        (qa) => qa.question.toLowerCase() === userMessage.toLowerCase()
+      );
+    
+      const botResponse = match
+        ? match.answer
+        : "I'm sorry, I don't know the answer to that yet.";
+    
+      setTimeout(() => {
+        setMessagesTwo((prev) => [...prev, { role: "ai", content: botResponse }]);
+        // setMessagesTwo([...messagesTwo, {role:"ai", content:botResponse}]);
+      }, 500);
+  };
+  
 
   return (
     <section className="md:h-full flex items-center text-gray-600">
@@ -235,6 +282,105 @@ export default function EventsPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+
+      {/* Floating icon new */}
+      <AnimatePresence>
+        {showChatIconTwo && (
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-13 right-4 z-50"
+          >
+            <Button
+              onClick={toggleChatTwo}
+              className="rounded-full size-14 p-2 shadow-lg"
+              ref={chatIconRef}
+              size="icon"
+            >
+              {!isChatOpenTwo ? (
+                <MessageCircle className="size-12" />
+              ) : (
+                <ArrowDownCircleIcon />
+              )}
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Chat Window */}
+      <AnimatePresence>
+        {isChatOpenTwo && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-20 right-4 z-50 w-[95%] md:w-[500px]"
+          >
+            <Card className="border-2">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-lg font-medium">
+                  Chat with Accelx AI
+                </CardTitle>
+                <Button
+                  onClick={toggleChatTwo}
+                  className="rounded-full size-14 p-2 shadow-lg"
+                  size="icon"
+                  variant="ghost"
+                >
+                  <X className="size-12" />
+                </Button>
+              </CardHeader>
+
+              <CardContent className="p-0">
+                <ScrollArea className="h-[300px] pr-4">
+                {messagesTwo.length === 0 && (
+                    <div className="w-full mt-32 text-center text-gray-500 font-bold">
+                      No messages yet.
+                    </div>
+                  )}
+
+                  {messagesTwo.map((msg, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
+                    >
+                      <strong>{msg.role === "user" ? "You" : "AI"}:</strong> {msg.content}
+                    </div>
+                  ))}
+                      
+                </ScrollArea>
+              </CardContent>
+
+              <CardFooter>
+              <form
+                    onSubmit={handleSubmitTwo}
+                    className="flex w-full items-center space-x-2"
+                  >
+                    <Input
+                      value={inputTwo}
+                      onChange={handleInputChangeTwo}
+                      className="flex-1"
+                      placeholder="Type your message here"
+                    />
+                    <Button
+                      type="submit"
+                      className="size-9"
+                    
+                      size="icon"
+                    >
+                      <Send className="size-4" />
+                    </Button>
+                  </form>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </section>
   );
 }
