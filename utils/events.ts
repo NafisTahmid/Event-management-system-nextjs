@@ -4,16 +4,16 @@ export interface Event {
   category: string;
   description: string;
   rating: string;
-  price: number;
-  discount:number;
+  price: string;
+  discount:string;
   date: string;
   image?: string; 
-  slots: number,
-  bookedSlots: number,
+  slots: string,
+  bookedSlots: string,
   bookedBy?: string[]; // Array of user emails
 }
 import {getUsers} from "@/utils/auth";
-import {writeEvents} from "@/utils/events";
+
 const EVENT_KEY = "events";
 
 // Safely get all events from localStorage
@@ -112,8 +112,7 @@ export async function bookEvent(event: Event, userEmail: string) {
   }
 
   // 1. Update event info
-  event.bookedSlots += 1;
-  event.slots -= event.bookedSlots;
+  event.bookedSlots = Number(event.bookedSlots) + 1;
   event.bookedBy = [...(event.bookedBy || []), userEmail];
 
   // 2. Update event in storage and API

@@ -23,12 +23,12 @@ const LoginPage = () => {
     console.log("Login data:", data);
     const success = loginUser(data.email, data.password);
     if (success) {
-      router.push("/dashboard");
+      router.push("/events");
     }
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <section className="h-full flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white p-8 shadow-md rounded-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-yellow-700">
           Login
@@ -70,7 +70,9 @@ const LoginPage = () => {
             Log In
           </button>
         </form>
-        <p>Don't have an account? <Link href="/signup">Sign up</Link></p>
+        <p>
+          Already have an account? <Link href="/signup">Sign up</Link>
+        </p>
       </div>
     </section>
   );

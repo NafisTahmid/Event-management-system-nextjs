@@ -1,55 +1,92 @@
 [
   {
-    "id": "c217f12d-fcfa-4bf8-b6b4-763f7a79b3fb",
-    "title": "Hellfest 2025",
+    "id": "3a74d677-da00-4d53-83bd-f60599b9ed7e",
+    "title": "Wedding",
+    "category": "entertainment",
+    "description": "Biggest family fest of the year",
+    "rating": "5.0",
+    "price": "424",
+    "discount": "15",
+    "date": "2025-05-30",
+    "image": "https://www.ptaufiqphotography.com/wp-content/uploads/2024/06/ptaufiq-indian-wedding-rajkot-India-ceremony-couple-portraits.jpg",
+    "slots": "20",
+    "bookedSlots": 16,
+    "bookedBy": [
+      "bob@test.com"
+    ]
+  },
+  {
+    "id": "948ecc14-742f-4602-95b7-c5efc456b66a",
+    "title": "Fifa world cup 2026",
+    "category": "sports",
+    "description": "The greatest show on earth.",
+    "rating": "4.3",
+    "price": 545.09,
+    "discount": "9",
+    "date": "2026-06-10",
+    "image": "https://www.reuters.com/resizer/v2/YUHEVOFFU5MJDKPCM4JFBBEQVY.jpg?auth=e03c3f170f8c20eef6c69bb1155ab2b4b4179a0c965ed44b949fcf5a6e4df4d7&width=5466&quality=80",
+    "slots": "30000",
+    "bookedSlots": 1201,
+    "bookedBy": [
+      "bob@test.com"
+    ]
+  },
+  {
+    "id": "64551cd8-f29c-4fe4-84a8-66df11a5031f",
+    "title": "Hellfest",
     "category": "music",
     "description": "Biggest music fest of the year",
-    "rating": "4.2",
-    "updatedPrice": -15.96,
-    "discount": "4",
-    "date": "2025-05-29",
-    "image": "data:image/jpeg;base64,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",
-    "slots": "5000",
-    "bookedSlots": "4990",
-    "price": "399"
-  },
-  {
-    "id": "b63dd2c6-9de1-440d-9dce-340a1d0c03d5",
-    "title": "Dummy",
-    "category": "sports",
-    "description": "The greatest show on earth.",
-    "rating": "4.1",
-    "updatedPrice": -3.15,
-    "discount": "15",
-    "date": "2025-06-05",
-    "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUSEhIVFRUXFRUXFxUXFRUXFRUXFhgXFhUVFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLysBCgoKDg0OGxAQGy0lHyUtLTAvLS8tLS0vLS0tLS0tKy0tLy0tLS0tLTUtLS0tLS0tLS0tLS81LS0tLS0tLS0tLf/AABEIALcBEwMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAAAQIDBAUGBwj/xAA9EAACAQIEAwUGBAUEAQUAAAABAhEAAwQSITEFQVEGEyJhcSMygZGhsQcUQsFSYtHh8HKCkvGyFSRDY4P/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAtEQACAgEDAwIEBwEBAAAAAAAAAQIRAxIhMQRBURNhgZHB0RQiMnGhsfDhBf/aAAwDAQACEQMRAD8A8aK0RVlkpoSuyjIgIpKma3URFFCEooopAFJS0UAFFFFABRRRTAKKKWgBKKWKWKAEiiKdRQA2iliigBKIpaKAEiilooASloopAFJS0UAJRS0TQAlFLSRRQxKKWkpUAlFLRQBfIphNTPUBWtENoJqF0qWkpkkEUkVM600JSoCOKKfFJFKgsbRFPiiKKCxsUkVJFGWigI4pacVpBRQBSxRThTEJFIRT6QigBlLFLRFIBtFLFFIYlFFLQAlFLRQAlJS1awXDb16e6tPcA3KqSBPmKTaW7Gk3wVKKc6EEggggkEEQQRoQRyNNpiEpQKkw6qWAdiq8yBmO2kCRzgVvLjcNZCLh1zuxAZ2BJjMRESDMRoI3rOc3HZK3/u5pCClu3RnWuFnKGusLYOwOjH4HaqN4rPhED71v9s8PDpcAgMCsTIXIYA8jBB3+1c7UYW5rW38CssVB6EgooorcxLxaoyaCaBVItjTQBT4pCKpIkQimEVLSMtVRLITQFqYJTu7p6BWQZaAKnyVZtYBjypaAK",
-    "slots": "9",
-    "bookedSlots": "2"
-  },
-  {
-    "id": "ba04dd78-cf66-4e88-8d21-4688d91de74a",
-    "title": "Dummy two",
-    "category": "sports",
-    "description": "The greatest show on earth.",
-    "rating": "4",
-    "updatedPrice": -60,
-    "discount": "15",
-    "date": "2025-05-16",
-    "image": "https://www.paperlesspost.com/blog/wp-content/uploads/051723_Blog_Wedding_BestWeddingWebsites_09.png",
-    "slots": "19",
-    "bookedSlots": "12"
-  },
-  {
-    "id": "05b1d668-2021-4cc7-8af3-dc04c75a6b94",
-    "title": "Dmmy three",
-    "category": "entertainment",
-    "description": "Biggest music fest of the year",
     "rating": "4.3",
-    "updatedPrice": -15.96,
-    "discount": "4",
+    "price": 339.15,
+    "discount": "15",
+    "date": "2025-05-24",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNy1y8q_OwoiQkMUPqhcHRBpVcUCQNGbBIxQ&s",
+    "slots": "5000",
+    "bookedSlots": 4000,
+    "bookedBy": [
+      "bob@test.com"
+    ]
+  },
+  {
+    "id": "ce25f8d4-741e-49c6-bc90-b3a23893d33f",
+    "title": "UFC Fight night",
+    "category": "sports",
+    "description": "Main event of the night",
+    "rating": "4.6",
+    "price": 479.2,
+    "discount": "20",
+    "date": "2025-05-24",
+    "image": "https://www.ufc.com/images/styles/background_image_sm/s3/2024-08/091424-ufc-306-omalley-vs-dvalishvili-EVENT-ART.jpg?h=d1cb525d&itok=mdF7ClBv",
+    "slots": "20000",
+    "bookedSlots": 10001,
+    "bookedBy": [
+      "bob@test.com"
+    ]
+  },
+  {
+    "id": "b89641e4-5f34-4fb5-bf9d-b8494df68488",
+    "title": "La Liga",
+    "category": "sports",
+    "description": "The greatest show on earth.",
+    "rating": "4.3",
+    "price": 409.18,
+    "discount": "18",
     "date": "2025-05-16",
-    "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUSEhIVFRUXFRUXFxUXFRUXFRUXFhgXFhUVFxUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLysBCgoKDg0OGxAQGy0lHyUtLTAvLS8tLS0vLS0tLS0tKy0tLy0tLS0tLTUtLS0tLS0tLS0tLS81LS0tLS0tLS0tLf/AABEIALcBEwMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAAAQIDBAUGBwj/xAA9EAACAQIEAwUGBAUEAQUAAAABAhEAAwQSITEFQVEGEyJhcSMygZGhsQcUQsFSYtHh8HKCkvGyFSRDY4P/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAtEQACAgEDAwIEBwEBAAAAAAAAAQIRAxIhMQRBURNhgZHB0RQiMnGhsfDhBf/aAAwDAQACEQMRAD8A8aK0RVlkpoSuyjIgIpKma3URFFCEooopAFJS0UAFFFFABRRRTAKKKWgBKKWKWKAEiiKdRQA2iliigBKIpaKAEiilooASloopAFJS0UAJRS0TQAlFLSRRQxKKWkpUAlFLRQBfIphNTPUBWtENoJqF0qWkpkkEUkVM600JSoCOKKfFJFKgsbRFPiiKKCxsUkVJFGWigI4pacVpBRQBSxRThTEJFIRT6QigBlLFLRFIBtFLFFIYlFFLQAlFLRQAlJS1awXDb16e6tPcA3KqSBPmKTaW7Gk3wVKKc6EEggggkEEQQRoQRyNNpiEpQKkw6qWAdiq8yBmO2kCRzgVvLjcNZCLh1zuxAZ2BJjMRESDMRoI3rOc3HZK3/u5pCClu3RnWuFnKGusLYOwOjH4HaqN4rPhED71v9s8PDpcAgMCsTIXIYA8jBB3+1c7UYW5rW38CssVB6EgooorcxLxaoyaCaBVItjTQBT4pCKpIkQimEVLSMtVRLITQFqYJTu7p6BWQZaAKnyVZtYBjypaAK",
-    "slots": "200",
-    "bookedSlots": "150"
+    "image": "https://www.aljazeera.com/wp-content/uploads/2023/03/32CM8HP-highres.jpg?resize=1800%2C1800",
+    "slots": "20000",
+    "bookedSlots": "2000"
+  },
+  {
+    "id": "2c81871a-0a6c-4d70-a00b-c083e80dca21",
+    "title": "La Tomatina",
+    "category": "entertainment",
+    "description": "Spain's unique festival",
+    "rating": "4",
+    "price": 4000,
+    "discount": "20",
+    "date": "2025-08-27",
+    "image": "https://spainvoyages.com/wp-content/uploads/2024/08/Tomatina-Infantil.jpg",
+    "slots": "1000",
+    "bookedSlots": "990"
   }
 ]

@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { deleteEvent,  getEvents, bookEvent } from "@/utils/events";
+import { deleteEvent, getEvents, bookEvent } from "@/utils/events";
 import { getCurrentUser } from "@/utils/auth";
 import Link from "next/link";
 
-import type { Event } from "@/interfaces/event"; // Optional, depending on your structure
+import type { Event } from "@/utils/events"; // Optional, depending on your structure
 
 const EventDetails = () => {
   const router = useRouter();
@@ -30,7 +30,7 @@ const EventDetails = () => {
     } else {
       router.push("/events");
     }
-  }, [params]);
+  }, [params, router]);
 
   const handleDelete = async (id: string) => {
     const confirmDelete = confirm(
@@ -42,7 +42,6 @@ const EventDetails = () => {
       });
       if (response.ok) {
         deleteEvent(id);
-        setEvents(getEvents());
         router.push("/events");
       }
     } else {
@@ -78,7 +77,8 @@ const EventDetails = () => {
     );
   }
 
-  const availableSlots = eventData.slots - eventData.bookedSlots;
+  const availableSlots =
+    Number(eventData.slots) - Number(eventData.bookedSlots);
   const discountedPrice = eventData.price - eventData.discount;
 
   return (
@@ -112,12 +112,15 @@ const EventDetails = () => {
           <span className="font-semibold">Rating:</span> {eventData.rating}
         </p>
         <p>
-          <span className="font-semibold">Price:</span>{" "}
-          <span className="line-through text-gray-500">${eventData.price}</span>{" "}
+          <span className="font-semibold">Discount:</span> {eventData.discount}%
+        </p>
+        <p>
+          <span className="font-semibold">Price:</span>
+          <span className="line-through text-gray-500">${eventData.price}</span>
           <span className="text-green-600 font-bold">${discountedPrice}</span>
         </p>
         <p>
-          <span className="font-semibold">Slots available:</span>{" "}
+          <span className="font-semibold">Slots available:</span>
           {availableSlots}
         </p>
         <div className="flex flex-start">

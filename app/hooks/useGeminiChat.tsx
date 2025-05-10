@@ -36,7 +36,7 @@ export function useGeminiChat() {
 
       const aiMessage = { role: "model" as const, content: text };
       setMessages((prev) => [...prev, aiMessage]);
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error generating content:", err);
       setError("An error occurred while generating the response.");
     } finally {

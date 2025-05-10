@@ -45,9 +45,9 @@ export default function EventsPage() {
     handleInputChange,
     handleSubmit,
     isLoading,
-    error,
-    stop,
-    reload,
+    // error,
+    // stop,
+    // reload,
   } = useGeminiChat();
 
   useEffect(() => {
@@ -223,14 +223,14 @@ export default function EventsPage() {
                       </button>
                     </div>
                   )}
-                  {error && (
+                  {/* {error && (
                     <div className="flex justify-center items-center py-2 text-red-500">
                       An error occurred
                       <button onClick={reload} className="underline ml-2">
                         Retry
                       </button>
                     </div>
-                  )}
+                  )} */}
                 </ScrollArea>
               </CardContent>
 

@@ -17,7 +17,7 @@ const UserBookings = () => {
     return (
       <div className="flex justify-center items-center h-64">
         <p className="text-lg text-yellow-600">
-          You haven't booked any events yet.
+          You have not booked any events yet.
         </p>
       </div>
     );
