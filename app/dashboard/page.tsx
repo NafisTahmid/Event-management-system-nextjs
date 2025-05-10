@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser, logout } from "@/utils/auth";
+import { getUserBookings } from "@/utils/events";
 
 const DashboardPage = () => {
   const router = useRouter();
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  
 
   useEffect(() => {
     const user = getCurrentUser();
@@ -14,9 +16,11 @@ const DashboardPage = () => {
       router.push("/login");
     } else {
       setUserEmail(user.email);
+     
     }
   }, [router]);
 
+ 
   const handleLogout = () => {
     logout();
     router.push("/login");

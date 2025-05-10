@@ -10,6 +10,7 @@ import { getCurrentUser, logout } from "@/utils/auth";
 import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { MdEventAvailable } from "react-icons/md";
+import { getUserBookings } from "@/utils/events";
 
 import ResponsiveMenu from "./ResponsiveMenu";
 
@@ -19,11 +20,20 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const [bookEvents, setBookEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     const user = getCurrentUser();
     setIsLoggedIn(!!user);
+    const bookings = getUserBookings();
+    setBookEvents(bookings);
   }, [pathname]);
+
+  let counter = 0;
+  for (let i = 0; i < bookEvents.length; i++) {
+    counter += 1;
+  }
+  console.log(counter);
 
   const handleLogout = () => {
     logout();
@@ -31,55 +41,6 @@ const Navbar = () => {
   };
 
   return (
-    // <nav className="bg-gray-900 text-white p-4 flex justify-between items-center">
-    //   <Link href="/events" className="text-xl font-bold">
-    //     EventApp
-    //   </Link>
-
-    //   {/* Mobile Hamburger Button */}
-    //   <button
-    //     className="lg:hidden text-white"
-    //     onClick={() => setIsMenuOpen(!isMenuOpen)}
-    //   >
-    //     &#9776;
-    //   </button>
-
-    //   {/* Navbar Links */}
-    //   <div
-    //     className={`lg:flex lg:space-x-4 flex-col lg:flex-row ${
-    //       isMenuOpen ? "block" : "hidden"
-    //     }`}
-    //   >
-    //     {isLoggedIn ? (
-    //       <>
-    //         <Link href="/events" className="hover:underline p-2">
-    //           Events
-    //         </Link>
-    //         <Link href="/events/create" className="hover:underline p-2">
-    //           Create
-    //         </Link>
-    //         <Link href="/events/bookings" className="hover:underline p-2">
-    //           My Bookings
-    //         </Link>
-    //         <button
-    //           onClick={handleLogout}
-    //           className="hover:underline text-red-400 p-2"
-    //         >
-    //           Logout
-    //         </button>
-    //       </>
-    //     ) : (
-    //       <>
-    //         <Link href="/login" className="hover:underline p-2">
-    //           Login
-    //         </Link>
-    //         <Link href="/signup" className="hover:underline p-2">
-    //           Signup
-    //         </Link>
-    //       </>
-    //     )}
-    //   </div>
-    // </nav>
     <>
       <nav>
         <div className="container flex justify-evenly items-center py-8">
@@ -115,7 +76,7 @@ const Navbar = () => {
                       href="/events/bookings"
                       className="inline-block py-1 px-3 hover:text-yellow-600 font-semibold"
                     >
-                      My bookings
+                      My bookings<sup className="text-black-">({counter})</sup>
                     </Link>
                   </li>
                 </>
@@ -142,9 +103,11 @@ const Navbar = () => {
           <div className="hidden md:block items-center gap-4 ">
             {isLoggedIn ? (
               <>
-                <button className="text-2xl hover:bg-yellow-600 hover:text-white rounded-full p-2 duration-200">
-                  <CgProfile />
-                </button>
+                <Link href="/dashboard">
+                  <button className="text-2xl hover:bg-yellow-600 hover:text-white rounded-full p-2 duration-200">
+                    <CgProfile />
+                  </button>
+                </Link>
                 <button
                   className="text-2xl py-3 px-5 ms-5 bg-yellow-600 hover:text-white rounded-md hover:bg-yellow-300 duration-200"
                   onClick={handleLogout}
