@@ -41,10 +41,31 @@ export default function EditEventPage() {
     }
   }, [params.id, router, reset]);
 
-  const onSubmit = (data: FormValues) => {
+  const toBase64 = async (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+    });
+
+  const onSubmit = async (data: FormValues) => {
     if (!eventData) return;
 
-    const updated = { ...eventData, ...data };
+    let updatedImage = eventData.image;
+
+    // Handle image file if a new one is uploaded
+    if (typeof data.image !== "string" && data.image.length > 0) {
+      const file = data.image[0];
+      updatedImage = await toBase64(file); // ✅ Await here
+    }
+
+    const updated: Event = {
+      ...eventData,
+      ...data,
+      image: updatedImage, // ✅ Use updated base64 or existing image
+    };
+
     updateEvent(updated);
     router.push("/events");
   };
@@ -102,7 +123,11 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Rating</label>
             <input
-              {...register("rating", { required: "Rating is required" })}
+              {...register("rating", {
+                required: "Rating is required",
+                min: { value: 0, message: "Rating can't be less than 0" },
+                max: { value: 5, message: "Rating can't be more than 5" },
+              })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -127,7 +152,8 @@ export default function EditEventPage() {
             <label className="block text-sm font-medium">Image</label>
             <input
               {...register("image", { required: "Image is required" })}
-              type="text"
+              type="file"
+              accept="image/*"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             {errors.image && (
@@ -165,7 +191,11 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Slots</label>
             <input
-              {...register("slots", { required: "Slots is required" })}
+              {...register("slots", {
+                required: "Slots field is required",
+                min: { value: 0, message: "Slots can't be less than 0" },
+                max: { value: 5000, message: "Slots can't be more than 5000" },
+              })}
               type="number"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />

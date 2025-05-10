@@ -16,6 +16,14 @@ type FormValues = {
   bookedSlots: string;
 };
 
+const toBase64 = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+  });
+
 const CreateEventPage = () => {
   const router = useRouter();
   const {
@@ -25,46 +33,47 @@ const CreateEventPage = () => {
   } = useForm<FormValues>();
 
   const onSubmit = async (data: FormValues) => {
-    const user = getCurrentUser();
-    if (!user) {
-      router.push("/login");
-      return;
-    }
-    const discountPrice =
-      parseFloat(data.price) * (parseFloat(data.discount) / 100);
-    const updatedPrice = parseFloat(data.price) - discountPrice;
-    const newEvent = {
-      id: crypto.randomUUID(),
-      title: data.title,
-      category: data.category,
-      description: data.description,
-      rating: data.rating,
-      price: updatedPrice,
-      discount: data.discount,
-      date: data.date,
-      image: data.image,
-      slots: data.slots,
-      bookedSlots: data.bookedSlots,
+      const user = getCurrentUser();
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+    
+      const discountPrice =
+        parseFloat(data.price) * (parseFloat(data.discount) / 100);
+      const updatedPrice = parseFloat(data.price) - discountPrice;
+      const file = data.image[0];
+      const imageBase64 = await toBase64(file); // ✅ Await here
+    
+      const newEvent = {
+        id: crypto.randomUUID(),
+        title: data.title,
+        category: data.category,
+        description: data.description,
+        rating: data.rating,
+        price: updatedPrice,
+        discount: data.discount,
+        date: data.date,
+        image: imageBase64, // ✅ Store base64 string
+        slots: data.slots,
+        bookedSlots: data.bookedSlots,
+      };
+    
+      const res = await fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newEvent),
+      });
+    
+      if (res.ok) {
+        const storedEvents = JSON.parse(localStorage.getItem("events") || "[]");
+        storedEvents.push(newEvent); // ✅ Use newEvent, not FormData
+        localStorage.setItem("events", JSON.stringify(storedEvents));
+        router.push("/events");
+      } else {
+        console.error("Failed to add event.");
+      }
     };
-    const res = await fetch("/api/events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newEvent),
-    });
-
-    if (res.ok) {
-      // Save to localStorage on the client
-      const storedEvents = JSON.parse(localStorage.getItem("events") || "[]");
-      storedEvents.push(newEvent);
-      localStorage.setItem("events", JSON.stringify(storedEvents));
-      console.log(newEvent);
-
-      router.push("/events");
-    } else {
-      console.error("Failed to add event.");
-    }
-  };
-
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white p-8 shadow-md rounded-md w-full max-w-md">
@@ -118,7 +127,11 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Rating</label>
             <input
-              {...register("rating", { required: "Rating is required" })}
+              {...register("rating", {
+                required: "Rating is required",
+                min: { value: 0, message: "Rating can't be less than 0" },
+                max: { value: 5, message: "Rating can't be more than 5" },
+              })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -143,7 +156,8 @@ const CreateEventPage = () => {
             <label className="block text-sm font-medium">Image</label>
             <input
               {...register("image", { required: "Image is required" })}
-              type="text"
+              type="file"
+              accept="image/*"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             {errors.image && (
@@ -153,7 +167,7 @@ const CreateEventPage = () => {
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium">Discount</label>
+            <label className="block text-sm font-medium">Discount in (%)</label>
             <input
               {...register("discount", { required: "Discount is required" })}
               type="text"
@@ -181,7 +195,11 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Slots</label>
             <input
-              {...register("slots", { required: "Slots is required" })}
+              {...register("slots", {
+                required: "Slots field is required",
+                min: { value: 0, message: "Slots can't be less than 0" },
+                max: { value: 5000, message: "Slots can't be more than 5000" },
+              })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />

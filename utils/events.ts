@@ -112,7 +112,7 @@ export async function bookEvent(event: Event, userEmail: string) {
   }
 
   // 1. Update event info
-  event.bookedSlots = Number(event.bookedSlots) + 1;
+  event.bookedSlots = (Number(event.bookedSlots) + 1).toString();
   event.bookedBy = [...(event.bookedBy || []), userEmail];
 
   // 2. Update event in storage and API
