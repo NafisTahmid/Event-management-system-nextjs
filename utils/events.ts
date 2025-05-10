@@ -13,6 +13,7 @@ export interface Event {
   bookedBy?: string[]; // Array of user emails
 }
 import {getUsers} from "@/utils/auth";
+import {writeEvents} from "@/utils/events";
 const EVENT_KEY = "events";
 
 // Safely get all events from localStorage
@@ -52,16 +53,27 @@ export function deleteEvent(id: string): void {
 
 // Update an existing event
 export async function updateEvent(updatedEvent: Event): Promise<void> {
-  const events = getEvents();
-  const index = events.findIndex((e) => e.id === updatedEvent.id);
+  const events = await getEvents(); // assuming it fetches from API or localStorage
+  const index = events.findIndex((e) => e.id === updatedEvent.id); // ❌ no need to await
   if (index !== -1) {
     events[index] = updatedEvent;
-    saveEvents(events);
-    await fetch(`/api/events/${updatedEvent.id}`, {
+
+    // First update on the server
+    const res = await fetch(`/api/events/${updatedEvent.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedEvent),
     });
+
+    if (!res.ok) {
+      console.error("Failed to update event on server");
+      return;
+    }
+
+    // Then update locally (if you're also storing in localStorage)
+    saveEvents(events);
+  } else {
+    console.warn("Event not found for update");
   }
 }
 

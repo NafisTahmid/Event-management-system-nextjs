@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { deleteEvent, setEvents, getEvents, bookEvent } from "@/utils/events";
+import { deleteEvent,  getEvents, bookEvent } from "@/utils/events";
 import { getCurrentUser } from "@/utils/auth";
 import Link from "next/link";
 

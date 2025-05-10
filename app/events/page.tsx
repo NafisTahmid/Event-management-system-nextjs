@@ -2,8 +2,6 @@
 import qaData from "@/data/qa.json";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-
 import {
   X,
   MessageCircle,
@@ -13,7 +11,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { getEvents, deleteEvent, Event } from "@/utils/events";
+import { getEvents, Event } from "@/utils/events";
 import { useGeminiChat } from "../hooks/useGeminiChat";
 
 import { Button } from "@/app/components/ui/button";
@@ -33,13 +31,13 @@ export default function EventsPage() {
   const [isChatOpenTwo, setIsChatOpenTwo] = useState(false);
   const [showChatIcon, setShowChatIcon] = useState(false);
   const [showChatIconTwo, setShowChatIconTwo] = useState(false);
-  const router = useRouter();
   const chatIconRef = useRef<HTMLButtonElement>(null);
 
   // For chatbot two
   const [inputTwo, setInputTwo] = useState("");
-  const [messagesTwo, setMessagesTwo] = useState<{ role: "user" | "ai"; content: string }[]>([]);
-
+  const [messagesTwo, setMessagesTwo] = useState<
+    { role: "user" | "ai"; content: string }[]
+  >([]);
 
   const {
     messages,
@@ -56,14 +54,14 @@ export default function EventsPage() {
     setEvents(getEvents());
 
     const handleScroll = () => {
-      if (window.scrollY > 200) {
+      if (window.scrollY > 50) {
         setShowChatIcon(true);
       } else {
         setShowChatIcon(false);
         setIsChatOpen(false);
       }
 
-      if(window.scrollY < 100) {
+      if (window.scrollY < 100) {
         setShowChatIconTwo(true);
       } else {
         setShowChatIconTwo(false);
@@ -71,60 +69,39 @@ export default function EventsPage() {
       }
     };
 
-
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-
   }, []);
-
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this event?")) {
-      const res = await fetch(`/api/events/${id}`, { method: "DELETE" });
-      if (res.ok) {
-        deleteEvent(id);
-        setEvents(getEvents());
-        router.push("/events");
-      } else {
-        alert("Failed to delete");
-      }
-    }
-  };
-
-  const handleEdit = (id: string) => {
-    router.push(`/events/${id}/edit`);
-  };
 
   const toggleChat = () => setIsChatOpen(!isChatOpen);
   const toggleChatTwo = () => setIsChatOpenTwo(!isChatOpenTwo);
 
   const handleInputChangeTwo = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInputTwo(e.target.value);
+    setInputTwo(e.target.value);
   };
 
   const handleSubmitTwo = (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!inputTwo.trim()) return;
-    
-      const userMessage = inputTwo.trim();
-      setMessagesTwo((prev) => [...prev, { role: "user", content: userMessage }]);
-   
-      setInputTwo("");
-    
-      const match = qaData.find(
-        (qa) => qa.question.toLowerCase() === userMessage.toLowerCase()
-      );
-    
-      const botResponse = match
-        ? match.answer
-        : "I'm sorry, I don't know the answer to that yet.";
-    
-      setTimeout(() => {
-        setMessagesTwo((prev) => [...prev, { role: "ai", content: botResponse }]);
-        // setMessagesTwo([...messagesTwo, {role:"ai", content:botResponse}]);
-      }, 500);
+    e.preventDefault();
+    if (!inputTwo.trim()) return;
+
+    const userMessage = inputTwo.trim();
+    setMessagesTwo((prev) => [...prev, { role: "user", content: userMessage }]);
+
+    setInputTwo("");
+
+    const match = qaData.find(
+      (qa) => qa.question.toLowerCase() === userMessage.toLowerCase()
+    );
+
+    const botResponse = match
+      ? match.answer
+      : "I'm sorry, I don't know the answer to that yet.";
+
+    setTimeout(() => {
+      setMessagesTwo((prev) => [...prev, { role: "ai", content: botResponse }]);
+      // setMessagesTwo([...messagesTwo, {role:"ai", content:botResponse}]);
+    }, 500);
   };
-  
 
   return (
     <section className="md:h-full flex items-center text-gray-600">
@@ -248,7 +225,7 @@ export default function EventsPage() {
                   )}
                   {error && (
                     <div className="flex justify-center items-center py-2 text-red-500">
-                      An error occurred :'({" "}
+                      An error occurred
                       <button onClick={reload} className="underline ml-2">
                         Retry
                       </button>
@@ -282,7 +259,6 @@ export default function EventsPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
 
       {/* Floating icon new */}
       <AnimatePresence>
@@ -337,7 +313,7 @@ export default function EventsPage() {
 
               <CardContent className="p-0">
                 <ScrollArea className="h-[300px] pr-4">
-                {messagesTwo.length === 0 && (
+                  {messagesTwo.length === 0 && (
                     <div className="w-full mt-32 text-center text-gray-500 font-bold">
                       No messages yet.
                     </div>
@@ -346,41 +322,37 @@ export default function EventsPage() {
                   {messagesTwo.map((msg, idx) => (
                     <div
                       key={idx}
-                      className={`p-2 ${msg.role === "user" ? "text-right" : "text-left"}`}
+                      className={`p-2 ${
+                        msg.role === "user" ? "text-right" : "text-left"
+                      }`}
                     >
-                      <strong>{msg.role === "user" ? "You" : "AI"}:</strong> {msg.content}
+                      <strong>{msg.role === "user" ? "You" : "AI"}:</strong>{" "}
+                      {msg.content}
                     </div>
                   ))}
-                      
                 </ScrollArea>
               </CardContent>
 
               <CardFooter>
-              <form
-                    onSubmit={handleSubmitTwo}
-                    className="flex w-full items-center space-x-2"
-                  >
-                    <Input
-                      value={inputTwo}
-                      onChange={handleInputChangeTwo}
-                      className="flex-1"
-                      placeholder="Type your message here"
-                    />
-                    <Button
-                      type="submit"
-                      className="size-9"
-                    
-                      size="icon"
-                    >
-                      <Send className="size-4" />
-                    </Button>
-                  </form>
+                <form
+                  onSubmit={handleSubmitTwo}
+                  className="flex w-full items-center space-x-2"
+                >
+                  <Input
+                    value={inputTwo}
+                    onChange={handleInputChangeTwo}
+                    className="flex-1"
+                    placeholder="Type your message here"
+                  />
+                  <Button type="submit" className="size-9" size="icon">
+                    <Send className="size-4" />
+                  </Button>
+                </form>
               </CardFooter>
             </Card>
           </motion.div>
         )}
       </AnimatePresence>
-
     </section>
   );
 }

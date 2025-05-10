@@ -1,6 +1,13 @@
 [
     { "question": "What is your name?", "answer": "I'm Accelx AI!" },
     { "question": "How can I register?", "answer": "You can register from the Sign Up page." },
-    { "question": "What is your purpose?", "answer": "I am here to help you with event-related queries." }
+    { "question": "What is your purpose?", "answer": "I am here to help you with event-related queries." },
+    {"question": "How to login?", "answer":"Go to login page, then enter your credentials. That's it."},
+    {"question": "What are the features of this app?", "answer":"You could view all the available events. Moreover, you could also edit and delete an event like wikipedia as well. Last but not the least, you could book an event based on available slots."},
+    {"question":"What are the technologies used in this app?", "answer":"Well, as it is an web app, it uses HTML5, CSS3 and javascript. Framework: next.js, language: typescript."},
+    {"question":"How is data stored in this app?", "answer":"We're retrieving data from a .json file. Although we're using localstorage for convenience, the app at it's core stores data in a file."},
+    {"question":"Can I get any discount upon booking an event?", "answer":"It depends. You'll be delighted to know that most of the event creators provide additional discount and almost all of the events give some discount."},
+    {"question":"What types of events can I view and book?", "answer":"You will probably find a gigantic array of events here as users add different kinds of events frequently."},
+    {"question":"Can I promote my event here?", "answer":"Obviously. The steps are simple: create your event and post it. The active users will immediately see the events."}
   ]
   
