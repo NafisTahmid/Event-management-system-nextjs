@@ -17,10 +17,10 @@ export default function EditEventPage() {
     rating: string;
     date: string;
     image: string;
-    discount: number;
-    price: number;
-    slots: number;
-    bookedSlots: number;
+    discount: string;
+    price: string;
+    slots: string;
+    bookedSlots: string;
   };
   const {
     register,
@@ -59,6 +59,24 @@ export default function EditEventPage() {
       const file = data.image[0];
       updatedImage = await toBase64(file); // ✅ Await here
     }
+    const rating = parseFloat(data.rating as unknown as string);
+    const discount = parseFloat(data.discount as unknown as string);
+    const price = parseFloat(data.price as unknown as string);
+    const slots = parseInt(data.slots as unknown as string);
+    const bookedSlots = parseInt(data.bookedSlots as unknown as string);
+
+    if (
+      isNaN(rating) ||
+      isNaN(discount) ||
+      isNaN(price) ||
+      isNaN(slots) ||
+      isNaN(bookedSlots)
+    ) {
+      alert(
+        "Please provide valid numeric values for rating, discount, price, slots and bookedSlots"
+      );
+      return;
+    }
 
     const updated: Event = {
       ...eventData,
@@ -81,7 +99,7 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Title</label>
             <input
-              {...register("title", { required: "Title is required" })}
+              {...register("title")}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -95,7 +113,7 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Category</label>
             <input
-              {...register("category", { required: "Category is required" })}
+              {...register("category")}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -108,9 +126,7 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Description</label>
             <input
-              {...register("description", {
-                required: "Description is required",
-              })}
+              {...register("description")}
               type="textarea"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -124,7 +140,6 @@ export default function EditEventPage() {
             <label className="block text-sm font-medium">Rating</label>
             <input
               {...register("rating", {
-                required: "Rating is required",
                 min: { value: 0, message: "Rating can't be less than 0" },
                 max: { value: 5, message: "Rating can't be more than 5" },
               })}
@@ -140,7 +155,7 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Date</label>
             <input
-              {...register("date", { required: "date is required" })}
+              {...register("date")}
               type="date"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -151,7 +166,7 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Image</label>
             <input
-              {...register("image", { required: "Image is required" })}
+              {...register("image")}
               type="file"
               accept="image/*"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -165,7 +180,7 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Discount</label>
             <input
-              {...register("discount", { required: "Discount is required" })}
+              {...register("discount")}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -178,8 +193,8 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Price</label>
             <input
-              {...register("price", { required: "Price is required" })}
-              type="number"
+              {...register("price")}
+              type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             {errors.price && (
@@ -192,11 +207,10 @@ export default function EditEventPage() {
             <label className="block text-sm font-medium">Slots</label>
             <input
               {...register("slots", {
-                required: "Slots field is required",
                 min: { value: 0, message: "Slots can't be less than 0" },
                 max: { value: 5000, message: "Slots can't be more than 5000" },
               })}
-              type="number"
+              type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             {errors.slots && (
@@ -208,10 +222,8 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Booked Slots</label>
             <input
-              {...register("bookedSlots", {
-                required: "Booked slots is required",
-              })}
-              type="number"
+              {...register("bookedSlots")}
+              type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             {errors.bookedSlots && (

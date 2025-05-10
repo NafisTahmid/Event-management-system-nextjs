@@ -4,6 +4,8 @@ import { getCurrentUser, logout } from "@/utils/auth";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { TbLayoutNavbarInactive } from "react-icons/tb";
+import Sidebar from "./Sidebar";
 
 type ResponsiveMenuProps = {
   open: boolean;

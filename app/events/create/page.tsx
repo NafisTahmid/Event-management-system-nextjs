@@ -33,47 +33,66 @@ const CreateEventPage = () => {
   } = useForm<FormValues>();
 
   const onSubmit = async (data: FormValues) => {
-      const user = getCurrentUser();
-      if (!user) {
-        router.push("/login");
-        return;
-      }
-    
-      const discountPrice =
-        parseFloat(data.price) * (parseFloat(data.discount) / 100);
-      const updatedPrice = parseFloat(data.price) - discountPrice;
-      const file = data.image[0];
-      const imageBase64 = await toBase64(file); // ✅ Await here
-    
-      const newEvent = {
-        id: crypto.randomUUID(),
-        title: data.title,
-        category: data.category,
-        description: data.description,
-        rating: data.rating,
-        price: updatedPrice,
-        discount: data.discount,
-        date: data.date,
-        image: imageBase64, // ✅ Store base64 string
-        slots: data.slots,
-        bookedSlots: data.bookedSlots,
-      };
-    
-      const res = await fetch("/api/events", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newEvent),
-      });
-    
-      if (res.ok) {
-        const storedEvents = JSON.parse(localStorage.getItem("events") || "[]");
-        storedEvents.push(newEvent); // ✅ Use newEvent, not FormData
-        localStorage.setItem("events", JSON.stringify(storedEvents));
-        router.push("/events");
-      } else {
-        console.error("Failed to add event.");
-      }
+    const user = getCurrentUser();
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    const rating = parseFloat(data.rating as unknown as string);
+    const discount = parseFloat(data.discount as unknown as string);
+    const price = parseFloat(data.price as unknown as string);
+    const slots = parseInt(data.slots as unknown as string);
+    const bookedSlots = parseInt(data.bookedSlots as unknown as string);
+
+    if (
+      isNaN(rating) ||
+      isNaN(discount) ||
+      isNaN(price) ||
+      isNaN(slots) ||
+      isNaN(bookedSlots)
+    ) {
+      alert(
+        "Please provide valid numeric values for rating, discount, price, slots and bookedSlots"
+      );
+      return;
+    }
+
+    const discountPrice =
+      parseFloat(data.price) * (parseFloat(data.discount) / 100);
+    const updatedPrice = parseFloat(data.price) - discountPrice;
+    const file = data.image[0];
+    const imageBase64 = await toBase64(file); // ✅ Await here
+
+    const newEvent = {
+      id: crypto.randomUUID(),
+      title: data.title,
+      category: data.category,
+      description: data.description,
+      rating: data.rating,
+      price: updatedPrice,
+      discount: data.discount,
+      date: data.date,
+      image: imageBase64, // ✅ Store base64 string
+      slots: data.slots,
+      bookedSlots: data.bookedSlots,
     };
+
+    const res = await fetch("/api/events", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newEvent),
+    });
+
+    if (res.ok) {
+      const storedEvents = JSON.parse(localStorage.getItem("events") || "[]");
+      storedEvents.push(newEvent); // ✅ Use newEvent, not FormData
+      localStorage.setItem("events", JSON.stringify(storedEvents));
+      router.push("/events");
+    } else {
+      console.error("Failed to add event.");
+    }
+  };
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white p-8 shadow-md rounded-md w-full max-w-md">
@@ -85,7 +104,7 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Create Event</label>
             <input
-              {...register("title", { required: "Title is required" })}
+              {...register("title")}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -99,7 +118,7 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Category</label>
             <input
-              {...register("category", { required: "Category is required" })}
+              {...register("category")}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -112,9 +131,7 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Description</label>
             <input
-              {...register("description", {
-                required: "Description is required",
-              })}
+              {...register("description")}
               type="textarea"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -128,7 +145,6 @@ const CreateEventPage = () => {
             <label className="block text-sm font-medium">Rating</label>
             <input
               {...register("rating", {
-                required: "Rating is required",
                 min: { value: 0, message: "Rating can't be less than 0" },
                 max: { value: 5, message: "Rating can't be more than 5" },
               })}
@@ -144,7 +160,7 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Date</label>
             <input
-              {...register("date", { required: "date is required" })}
+              {...register("date")}
               type="date"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -155,7 +171,7 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Image</label>
             <input
-              {...register("image", { required: "Image is required" })}
+              {...register("image")}
               type="file"
               accept="image/*"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -169,7 +185,7 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Discount in (%)</label>
             <input
-              {...register("discount", { required: "Discount is required" })}
+              {...register("discount")}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -182,7 +198,7 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Price</label>
             <input
-              {...register("price", { required: "Price is required" })}
+              {...register("price")}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -196,7 +212,6 @@ const CreateEventPage = () => {
             <label className="block text-sm font-medium">Slots</label>
             <input
               {...register("slots", {
-                required: "Slots field is required",
                 min: { value: 0, message: "Slots can't be less than 0" },
                 max: { value: 5000, message: "Slots can't be more than 5000" },
               })}
@@ -212,9 +227,7 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Booked Slots</label>
             <input
-              {...register("bookedSlots", {
-                required: "Booked slots is required",
-              })}
+              {...register("bookedSlots")}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />

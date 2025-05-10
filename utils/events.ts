@@ -101,7 +101,7 @@ export function getUserBookings(): Event[] {
 }
 
 export async function bookEvent(event: Event, userEmail: string) {
-  if (event.bookedSlots >= event.slots) {
+  if (Number(event.bookedSlots) >= Number(event.slots)) {
     alert("This event is fully booked.");
     return;
   }
