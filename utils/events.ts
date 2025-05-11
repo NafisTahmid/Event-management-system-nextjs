@@ -125,14 +125,40 @@ export async function bookEvent(event: Event) {
   alert("✅ Successfully booked the event!");
 }
 
-export const deleteBookedEvent = (event_id: string) => {
-  const user = getCurrentUser();
-  if (user) {
-    user.bookedEvents = user.bookedEvents.filter((id) => id !== event_id);
-    console.log("Event deleted:", user.bookedEvents);
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    window.location.reload();
+export const deleteBookedEvent = async (event_id: string) => {
+  const currentUser = getCurrentUser();
+  const users = getUsers();
+
+  // 1. Update the user's bookedEvents
+  const updatedUsers = users.map((user) => {
+    if (user.email === currentUser.email) {
+      return {
+        ...user,
+        bookedEvents: user.bookedEvents?.filter((id) => id !== event_id),
+      };
+    }
+    return user;
+  });
+
+  // Save to localStorage
+  localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+  // 2. Update the event itself - remove user from bookedBy and decrease bookedSlots
+  const events = await getEvents(); // fetch all events from /api/events
+  const updatedEvent = events.find((event) => event.id === event_id);
+
+  if (updatedEvent) {
+    updatedEvent.bookedBy = updatedEvent.bookedBy?.filter(email => email !== currentUser.email);
+    updatedEvent.bookedSlots = (Number(updatedEvent.bookedSlots) - 1).toString();
+
+    // 3. Update the event in the backend
+    await fetch(`/api/events/${updatedEvent.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedEvent),
+    });
   }
+
 };
 
 export const getUserBookings = () => {
@@ -140,7 +166,23 @@ export const getUserBookings = () => {
   const users = getUsers();
   const foundUser = users.find((user) => user.email === currentUser.email);
   if(foundUser) {
-    return foundUser.bookedEvents.length;
+    return foundUser.bookedEvents;
   }
-  return 0;
+  return null;
 }
+
+// Get events helper function
+const getEvents = async (): Promise<Event[]> => {
+  const res = await fetch(`/api/events`);
+  const data = await res.json();
+  return data;
+};
+
+export const getAllUserEvents = async (): Promise<Event[]> => {
+  const currentUser = getCurrentUser();
+  const events = await getEvents();
+  const userEvents = events.filter(event =>
+    event.bookedBy?.includes(currentUser?.email)
+  );
+  return userEvents;
+};

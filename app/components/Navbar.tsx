@@ -8,7 +8,11 @@ import { getCurrentUser, logout } from "@/utils/auth";
 import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { MdEventAvailable } from "react-icons/md";
-import { deleteBookedEvent, getUserBookings } from "@/utils/events";
+import {
+  deleteBookedEvent,
+  getUserBookings,
+  getAllUserEvents,
+} from "@/utils/events";
 import Sidebar from "./Sidebar";
 import ResponsiveMenu from "./ResponsiveMenu";
 
@@ -18,7 +22,8 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const [bookEvents, setBookEvents] = useState<Event[]>([]);
+  const [allUserEvents, setAllUserEvents] = useState<Event[]>([]);
+  const [bookEvents, setBookEvents] = useState<string[]>([]);
   const [isSideBarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebarOpen = () => {
@@ -30,17 +35,33 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const user = getCurrentUser();
-    setIsLoggedIn(!!user);
-    // const bookings = getUserBookings();
-    // setBookEvents(bookings);
+    const fetchUserData = async () => {
+      const user = getCurrentUser();
+      setIsLoggedIn(!!user);
+
+      const bookings = getUserBookings();
+      setBookEvents(bookings || []);
+
+      const events = await getAllUserEvents();
+      setAllUserEvents(events);
+    };
+
+    fetchUserData();
   }, [pathname]);
 
-  const counter = getUserBookings();
+  let counter = 0;
+  for (let i = 0; i < bookEvents.length; i++) {
+    counter += 1;
+  }
 
   const handleLogout = () => {
     logout();
     router.push("/login");
+  };
+
+  const deleteUserBooking = async (id) => {
+    await deleteBookedEvent(id);
+    alert("Booking deleted");
   };
 
   return (
@@ -175,10 +196,10 @@ const Navbar = () => {
           </div>
 
           <div className="p-4 overflow-y-auto h-[90%] space-y-4">
-            {bookEvents.length === 0 ? (
+            {allUserEvents.length === 0 ? (
               <p className="text-white text-sm">No bookings found.</p>
             ) : (
-              bookEvents.map((event) => (
+              allUserEvents.map((event) => (
                 <div
                   key={event.id}
                   className="border p-3 rounded-md shadow-sm hover:shadow-md transition bg-white"
@@ -190,7 +211,7 @@ const Navbar = () => {
                       </h3>
                     </Link>
                     <button
-                      onClick={() => deleteBookedEvent(event.id)}
+                      onClick={() => deleteUserBooking(event.id)}
                       className="text-2xl text-black"
                     >
                       &#10005;
