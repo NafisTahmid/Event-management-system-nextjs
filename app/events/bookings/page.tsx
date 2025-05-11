@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Event } from "@/utils/events";
-import { getUserBookings, getAllUserEvents } from "@/utils/events";
+import { getAllUserEvents } from "@/utils/events";
 import Link from "next/link";
 
 const UserBookings = () => {
@@ -14,7 +14,6 @@ const UserBookings = () => {
       setBookedEvents(bookings);
     }
     getAllBookings();
-    
   }, []);
 
   if (!bookedEvents.length) {

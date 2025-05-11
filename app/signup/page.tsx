@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { saveUser } from "@/utils/auth";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 type FormValues = {
   email: string;
@@ -22,7 +23,7 @@ const SignupPage = () => {
     console.log("New user data:", data);
 
     saveUser({ email: data.email, password: data.password });
-    alert("Signup successful!");
+    toast.success("Signup successful");
     router.push("/login");
   };
 
@@ -68,12 +69,11 @@ const SignupPage = () => {
           >
             Signup
           </button>
-          <p>Don't have an account? <Link href="/login">Login</Link></p>
+          <p>
+            Do not have an account? <Link href="/login">Login</Link>
+          </p>
         </form>
-            
-    
       </div>
-   
     </section>
   );
 };

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { loginUser } from "@/utils/auth";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 type FormValues = {
   email: string;
@@ -23,7 +24,10 @@ const LoginPage = () => {
     console.log("Login data:", data);
     const success = loginUser(data.email, data.password);
     if (success) {
+      toast.success("Login successful :D");
       router.push("/events");
+    } else {
+      toast.error("Invalid credentials");
     }
   };
 

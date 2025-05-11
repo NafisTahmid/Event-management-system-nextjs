@@ -8,12 +8,12 @@ import { getCurrentUser, logout } from "@/utils/auth";
 import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { MdEventAvailable } from "react-icons/md";
+import { Event } from "@/utils/events";
 import {
   deleteBookedEvent,
   getUserBookings,
   getAllUserEvents,
 } from "@/utils/events";
-import Sidebar from "./Sidebar";
 import ResponsiveMenu from "./ResponsiveMenu";
 
 const Navbar = () => {
@@ -59,10 +59,10 @@ const Navbar = () => {
     router.push("/login");
   };
 
-  const deleteUserBooking = async (id) => {
+  const deleteUserBooking = async (id: string) => {
     await deleteBookedEvent(id);
     alert("Booking deleted");
-    router.push("/events/bookings")
+    router.push("/events/bookings");
   };
 
   return (
@@ -208,7 +208,7 @@ const Navbar = () => {
                   <div className="flex justify-between items-center mx-auto py-2">
                     <Link href={`events/event-details/${event.id}`}>
                       <h3 className="font-semibold text-black">
-                        {event.title}
+                        {event?.title}
                       </h3>
                     </Link>
                     <button

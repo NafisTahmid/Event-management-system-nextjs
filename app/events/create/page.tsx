@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/utils/auth";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type FormValues = {
   title: string;
@@ -9,7 +10,7 @@ type FormValues = {
   description: string;
   rating: string;
   date: string;
-  image: string;
+  image: FileList;
   discount: string;
   price: string;
   slots: string;
@@ -88,7 +89,8 @@ const CreateEventPage = () => {
       // const storedEvents = JSON.parse(localStorage.getItem("events") || "[]");
       // storedEvents.push(newEvent); // ✅ Use newEvent, not FormData
       // localStorage.setItem("events", JSON.stringify(storedEvents));
-      alert("Event added successfully")
+      // alert("Event added successfully");
+      toast.success("Event updated successfully!");
       router.push("/events");
     } else {
       console.error("Failed to add event.");

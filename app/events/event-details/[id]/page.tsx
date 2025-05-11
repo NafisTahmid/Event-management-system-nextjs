@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { deleteEvent, getEvents, bookEvent } from "@/utils/events";
+import { bookEvent } from "@/utils/events";
 import { getCurrentUser } from "@/utils/auth";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 import type { Event } from "@/utils/events"; // Optional, depending on your structure
+import Image from "next/image";
 
 const EventDetails = () => {
   const router = useRouter();
@@ -37,21 +39,30 @@ const EventDetails = () => {
     fetchEvent();
   }, [params, router]);
 
+  // const handleDelete = async (id: string) => {
+  //   const confirmDelete = confirm(
+  //     "Are you sure you want to delete this event?"
+  //   );
+  //   if (confirmDelete) {
+  //     const response = await fetch(`/api/events/${id}`, {
+  //       method: "DELETE",
+  //     });
+  //     if (response.ok) {
+  //       // deleteEvent(id);
+  //       toast.success("Event deleted successfully");
+  //       router.push("/events");
+  //     }
+  //   } else {
+  //     alert("Failed to delete");
+  //   }
+  // };
   const handleDelete = async (id: string) => {
-    const confirmDelete = confirm(
-      "Are you sure you want to delete this event?"
-    );
-    if (confirmDelete) {
-      const response = await fetch(`/api/events/${id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        // deleteEvent(id);
-        alert("Event deleted successfully!");
-        router.push("/events");
-      }
-    } else {
-      alert("Failed to delete");
+    const response = await fetch(`/api/events/${id}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      toast.success("Event deleted successfully");
+      router.push("/events");
     }
   };
 
@@ -86,7 +97,8 @@ const EventDetails = () => {
 
   const availableSlots =
     Number(eventData.slots) - Number(eventData.bookedSlots);
-  const discountedPrice = eventData.price - eventData.discount;
+  const discountedPrice =
+    parseFloat(eventData.price) - parseFloat(eventData.discount);
 
   return (
     <div className="max-w-2xl mx-auto py-20 px-4 md:px-0">
@@ -100,6 +112,8 @@ const EventDetails = () => {
             src={eventData.image}
             alt={eventData.title}
             className="w-full h-full object-cover rounded-lg"
+            width={100}
+            height={100}
           />
         </div>
       )}

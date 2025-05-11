@@ -13,7 +13,7 @@ export interface Event {
   bookedSlots: string,
   bookedBy?: string[]; // Array of user emails
 }
-import {getUsers, getCurrentUser, saveUser } from "@/utils/auth";
+import {getUsers, getCurrentUser} from "@/utils/auth";
 
 const EVENT_KEY = "events";
 
@@ -131,7 +131,7 @@ export const deleteBookedEvent = async (event_id: string) => {
 
   // 1. Update the user's bookedEvents
   const updatedUsers = users.map((user) => {
-    if (user.email === currentUser.email) {
+    if (user.email === currentUser?.email) {
       return {
         ...user,
         bookedEvents: user.bookedEvents?.filter((id) => id !== event_id),
@@ -148,7 +148,7 @@ export const deleteBookedEvent = async (event_id: string) => {
   const updatedEvent = events.find((event) => event.id === event_id);
 
   if (updatedEvent) {
-    updatedEvent.bookedBy = updatedEvent.bookedBy?.filter(email => email !== currentUser.email);
+    updatedEvent.bookedBy = updatedEvent.bookedBy?.filter(email => email !== currentUser?.email);
     updatedEvent.bookedSlots = (Number(updatedEvent.bookedSlots) - 1).toString();
 
     // 3. Update the event in the backend
@@ -163,6 +163,7 @@ export const deleteBookedEvent = async (event_id: string) => {
 
 export const getUserBookings = () => {
   const currentUser = getCurrentUser();
+    if (!currentUser) return null; 
   const users = getUsers();
   const foundUser = users.find((user) => user.email === currentUser.email);
   if(foundUser) {
@@ -180,9 +181,12 @@ const getEvents = async (): Promise<Event[]> => {
 
 export const getAllUserEvents = async (): Promise<Event[]> => {
   const currentUser = getCurrentUser();
+  if(!currentUser) {
+    return [];
+  }
   const events = await getEvents();
   const userEvents = events.filter(event =>
-    event.bookedBy?.includes(currentUser?.email)
+    event.bookedBy?.includes(currentUser.email)
   );
   return userEvents;
 };

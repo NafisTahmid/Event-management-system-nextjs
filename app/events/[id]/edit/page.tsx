@@ -2,8 +2,9 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Event, getEvents, updateEvent } from "@/utils/events";
+import { Event, updateEvent } from "@/utils/events";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 export default function EditEventPage() {
   const router = useRouter();
@@ -72,7 +73,7 @@ export default function EditEventPage() {
     let updatedImage = eventData.image;
 
     // Handle image file if a new one is uploaded
-    if (typeof data.image instanceof FileList && data.image.length > 0) {
+    if (data.image instanceof FileList && data.image.length > 0) {
       const file = data.image[0];
       updatedImage = await toBase64(file); // ✅ Await here
     }
@@ -103,6 +104,7 @@ export default function EditEventPage() {
 
     try {
       await updateEvent(updated);
+      toast.success("Event updated successfully!");
       router.push("/events");
     } catch (err) {
       console.error("Update failed", err);

@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { Event } from "@/utils/events";
 import { useGeminiChat } from "../hooks/useGeminiChat";
+import Image from "next/image";
 
 import { Button } from "@/app/components/ui/button";
 import {
@@ -52,9 +53,9 @@ export default function EventsPage() {
 
   useEffect(() => {
     fetch("/api/events")
-    .then(res => res.json())
-    .then(data => setEvents(data));
-    
+      .then((res) => res.json())
+      .then((data) => setEvents(data));
+
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setShowChatIcon(true);
