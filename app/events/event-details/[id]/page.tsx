@@ -67,6 +67,7 @@ const EventDetails = () => {
     await bookEvent(eventData);
     setIsBooked(true);
     setMessage("✅ Successfully booked this event!");
+    router.push("/events/bookings");
 
     // const updatedEvents = getEvents();
     // const updatedEvent = updatedEvents.find((e) => e.id === eventData.id);

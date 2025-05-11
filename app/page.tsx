@@ -1,30 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getEvents, deleteEvent, Event } from "@/utils/events";
-import Link from "next/link";
-
+// import Link from "next/link";
 
 export default function HomePage() {
-  const [events, setEvents] = useState<Event[]>([]);
+  // const [events, setEvents] = useState<Event[]>([]);
 
-  useEffect(() => {
-    const allEvents = getEvents();
-    setEvents(allEvents);
-  }, []);
+  // useEffect(() => {
+  //   // const allEvents = getEvents();
+  //   // setEvents(allEvents);
+  // }, []);
 
-  const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this event?")) {
-      deleteEvent(id);
-      setEvents(getEvents()); // refresh the list
-    }
-  };
+  // const handleDelete = (id: string) => {
+  //   if (confirm("Are you sure you want to delete this event?")) {
+  //     deleteEvent(id);
+  //     setEvents(getEvents()); // refresh the list
+  //   }
+  // };
 
   return (
     <main className="max-w-4xl mx-auto p-6 h-screen">
-    
       <h1 className="text-3xl font-bold mb-6">All Events</h1>
-      {events.length === 0 ? (
+      {/* {events.length === 0 ? (
         <p className="text-gray-600">No events found.</p>
       ) : (
         <div className="space-y-4">
@@ -53,7 +49,7 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </main>
   );
 }

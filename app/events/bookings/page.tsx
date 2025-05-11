@@ -2,15 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { Event } from "@/utils/events";
-import { getUserBookings } from "@/utils/events";
+import { getUserBookings, getAllUserEvents } from "@/utils/events";
 import Link from "next/link";
 
 const UserBookings = () => {
   const [bookedEvents, setBookedEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    const bookings = getUserBookings();
-    setBookedEvents(bookings);
+    async function getAllBookings() {
+      const bookings = await getAllUserEvents();
+      setBookedEvents(bookings);
+    }
+    getAllBookings();
+    
   }, []);
 
   if (!bookedEvents.length) {

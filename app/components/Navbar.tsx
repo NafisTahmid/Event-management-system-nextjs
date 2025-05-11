@@ -62,6 +62,7 @@ const Navbar = () => {
   const deleteUserBooking = async (id) => {
     await deleteBookedEvent(id);
     alert("Booking deleted");
+    router.push("/events/bookings")
   };
 
   return (
