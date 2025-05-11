@@ -18,18 +18,23 @@ const EventDetails = () => {
   useEffect(() => {
     if (!params?.id) return;
 
-    const events = getEvents();
-    const foundEvent = events.find((e) => e.id === params.id);
+    const fetchEvent = async () => {
+      try {
+        const res = await fetch(`/api/events/${params.id}`);
+        if (!res.ok) {
+          router.push("/events");
+          return;
+        }
 
-    if (foundEvent) {
-      setEventData(foundEvent);
-      const currentUser = getCurrentUser();
-      if (currentUser && foundEvent.bookedBy?.includes(currentUser.email)) {
-        setIsBooked(true);
+        const foundEvent = await res.json();
+        setEventData(foundEvent);
+      } catch (err) {
+        console.error("Failed to fetch event:", err);
+        router.push("/events");
       }
-    } else {
-      router.push("/events");
-    }
+    };
+
+    fetchEvent();
   }, [params, router]);
 
   const handleDelete = async (id: string) => {
@@ -41,7 +46,8 @@ const EventDetails = () => {
         method: "DELETE",
       });
       if (response.ok) {
-        deleteEvent(id);
+        // deleteEvent(id);
+        alert("Event deleted successfully!");
         router.push("/events");
       }
     } else {
@@ -58,15 +64,15 @@ const EventDetails = () => {
       return;
     }
 
-    await bookEvent(eventData, currentUser.email);
+    await bookEvent(eventData);
     setIsBooked(true);
     setMessage("✅ Successfully booked this event!");
 
-    const updatedEvents = getEvents();
-    const updatedEvent = updatedEvents.find((e) => e.id === eventData.id);
-    if (updatedEvent) {
-      setEventData(updatedEvent);
-    }
+    // const updatedEvents = getEvents();
+    // const updatedEvent = updatedEvents.find((e) => e.id === eventData.id);
+    // if (updatedEvent) {
+    //   setEventData(updatedEvent);
+    // }
   };
 
   if (!eventData) {

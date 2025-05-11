@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readEvents, writeEvents } from "@/lib/events";
 import { Event } from "@/utils/events";
+import path from "path";
+import fs from "fs";
 
 export async function PUT(
   req: NextRequest,
@@ -29,4 +31,27 @@ export async function DELETE(
   const filtered = events.filter((e: Event) => e.id !== params.id);
   writeEvents(filtered);
   return NextResponse.json({ message: "Deleted!" });
+}
+
+const filePath = path.join(process.cwd(), "data", "events.json");
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const data = fs.readFileSync(filePath, "utf-8");
+    const events: Event[] = JSON.parse(data);
+    const event = events.find((e) => e.id === params.id);
+
+    if (!event) {
+      return NextResponse.json({ error: "Event not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(event);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to read events" },
+      { status: 500 }
+    );
+  }
 }

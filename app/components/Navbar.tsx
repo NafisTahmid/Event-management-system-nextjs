@@ -8,7 +8,7 @@ import { getCurrentUser, logout } from "@/utils/auth";
 import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { MdEventAvailable } from "react-icons/md";
-import { getUserBookings } from "@/utils/events";
+import { deleteBookedEvent, getUserBookings } from "@/utils/events";
 import Sidebar from "./Sidebar";
 import ResponsiveMenu from "./ResponsiveMenu";
 
@@ -32,15 +32,11 @@ const Navbar = () => {
   useEffect(() => {
     const user = getCurrentUser();
     setIsLoggedIn(!!user);
-    const bookings = getUserBookings();
-    setBookEvents(bookings);
+    // const bookings = getUserBookings();
+    // setBookEvents(bookings);
   }, [pathname]);
 
-  let counter = 0;
-  for (let i = 0; i < bookEvents.length; i++) {
-    counter += 1;
-  }
-  console.log(counter);
+  const counter = getUserBookings();
 
   const handleLogout = () => {
     logout();
@@ -187,9 +183,20 @@ const Navbar = () => {
                   key={event.id}
                   className="border p-3 rounded-md shadow-sm hover:shadow-md transition bg-white"
                 >
-                  <Link href={`events/event-details/${event.id}`}>
-                    <h3 className="font-semibold text-black">{event.title}</h3>
-                  </Link>
+                  <div className="flex justify-between items-center mx-auto py-2">
+                    <Link href={`events/event-details/${event.id}`}>
+                      <h3 className="font-semibold text-black">
+                        {event.title}
+                      </h3>
+                    </Link>
+                    <button
+                      onClick={() => deleteBookedEvent(event.id)}
+                      className="text-2xl text-black"
+                    >
+                      &#10005;
+                    </button>
+                  </div>
+
                   <p className="text-sm text-black">{event.date}</p>
                   {/* <p className="text-sm text-gray-500">{event.location}</p> */}
                 </div>

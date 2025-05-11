@@ -16,7 +16,7 @@ export default function EditEventPage() {
     description: string;
     rating: string;
     date: string;
-    image: string;
+    image: string | FileList;
     discount: string;
     price: string;
     slots: string;
@@ -31,14 +31,31 @@ export default function EditEventPage() {
   } = useForm<FormValues>();
 
   useEffect(() => {
-    const events = getEvents();
-    const foundEvent = events.find((e) => e.id === params.id);
-    if (!foundEvent) {
-      router.push("/");
-    } else {
-      setEventData(foundEvent);
-      reset(foundEvent); // ✅ set form values
-    }
+    const fetchEvent = async () => {
+      try {
+        const res = await fetch(`/api/events/${params.id}`);
+        if (!res.ok) {
+          router.push("/events");
+          return;
+        }
+
+        const foundEvent = await res.json();
+        return foundEvent;
+      } catch (err) {
+        console.error("Failed to fetch event:", err);
+        router.push("/events");
+      }
+    };
+    const fetchAndSet = async () => {
+      const foundEvent = await fetchEvent();
+      if (!foundEvent) {
+        router.push("/");
+      } else {
+        setEventData(foundEvent);
+        reset(foundEvent); // ✅ set form values
+      }
+    };
+    fetchAndSet();
   }, [params.id, router, reset]);
 
   const toBase64 = async (file: File) =>
@@ -55,7 +72,7 @@ export default function EditEventPage() {
     let updatedImage = eventData.image;
 
     // Handle image file if a new one is uploaded
-    if (typeof data.image !== "string" && data.image.length > 0) {
+    if (typeof data.image instanceof FileList && data.image.length > 0) {
       const file = data.image[0];
       updatedImage = await toBase64(file); // ✅ Await here
     }
@@ -84,8 +101,13 @@ export default function EditEventPage() {
       image: updatedImage, // ✅ Use updated base64 or existing image
     };
 
-    updateEvent(updated);
-    router.push("/events");
+    try {
+      await updateEvent(updated);
+      router.push("/events");
+    } catch (err) {
+      console.error("Update failed", err);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -125,9 +147,8 @@ export default function EditEventPage() {
           </div>
           <div>
             <label className="block text-sm font-medium">Description</label>
-            <input
+            <textarea
               {...register("description")}
-              type="textarea"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
             {errors.description && (

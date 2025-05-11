@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { readEvents, writeEvents } from "@/lib/events";
+import { getEvents } from "@/lib/events";
 
 export async function GET() {
-  const events = readEvents();
+  const events = getEvents();
   return NextResponse.json(events);
 }
 

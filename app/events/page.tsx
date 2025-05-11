@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { getEvents, Event } from "@/utils/events";
+import { Event } from "@/utils/events";
 import { useGeminiChat } from "../hooks/useGeminiChat";
 
 import { Button } from "@/app/components/ui/button";
@@ -51,8 +51,10 @@ export default function EventsPage() {
   } = useGeminiChat();
 
   useEffect(() => {
-    setEvents(getEvents());
-
+    fetch("/api/events")
+    .then(res => res.json())
+    .then(data => setEvents(data));
+    
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setShowChatIcon(true);

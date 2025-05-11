@@ -85,9 +85,10 @@ const CreateEventPage = () => {
     });
 
     if (res.ok) {
-      const storedEvents = JSON.parse(localStorage.getItem("events") || "[]");
-      storedEvents.push(newEvent); // ✅ Use newEvent, not FormData
-      localStorage.setItem("events", JSON.stringify(storedEvents));
+      // const storedEvents = JSON.parse(localStorage.getItem("events") || "[]");
+      // storedEvents.push(newEvent); // ✅ Use newEvent, not FormData
+      // localStorage.setItem("events", JSON.stringify(storedEvents));
+      alert("Event added successfully")
       router.push("/events");
     } else {
       console.error("Failed to add event.");

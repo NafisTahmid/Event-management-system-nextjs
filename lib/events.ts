@@ -12,3 +12,14 @@ export function readEvents() {
 export function writeEvents(events: Event[]) {
   fs.writeFileSync(dataPath, JSON.stringify(events, null, 2));
 }
+
+
+export const getEvents = (): Event[] => {
+  try {
+    const json = fs.readFileSync(dataPath, "utf8");
+    return JSON.parse(json) as Event[];
+  } catch (err) {
+    console.error("Error reading events.json:", err);
+    return [];
+  }
+};
