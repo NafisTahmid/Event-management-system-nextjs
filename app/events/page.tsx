@@ -27,6 +27,8 @@ import {
 import { Input } from "@/app/components/ui/input";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
 import { deleteBookedEvent, getAllUserEvents, Event } from "@/utils/events";
+import Carousel from "@/app/components/Carousel";
+import eventsArray from "@/data/events.json";
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -44,6 +46,9 @@ export default function EventsPage() {
   >([]);
   const [userEvents, setUserEvents] = useState<Event[]>([]);
   const [isSideBarOpen, setIsSidebarOpen] = useState(false);
+
+  const topEvents = eventsArray.slice(0, 3);
+  console.log(topEvents);
 
   const toggleSidebarOpen = () => {
     setIsSidebarOpen(true);
@@ -141,10 +146,13 @@ export default function EventsPage() {
             <h1 className="text-4xl md:text-6xl text-yellow-700 font-semibold pb-2">
               Accelx Recent Events
             </h1>
-            <h5 className="text-base md:text-lg text-indigo-700 mb-1">
-              See our recent Events
+            <h5 className="text-base md:text-4xl text-blue-600 mt-20">
+              Our top rated Events
             </h5>
           </div>
+          {topEvents.map((te) => (
+            <Carousel image={te.image} />
+          ))}
 
           <div className="flex flex-wrap m-4">
             {events.map((event) => (
