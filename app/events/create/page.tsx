@@ -10,7 +10,7 @@ type FormValues = {
   description: string;
   rating: string;
   date: string;
-  image: FileList;
+  image: FileList | string;
   discount: string;
   price: string;
   slots: string;
@@ -31,7 +31,9 @@ const CreateEventPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    mode: "onTouched",
+  });
 
   const onSubmit = async (data: FormValues) => {
     const user = getCurrentUser();
@@ -40,30 +42,18 @@ const CreateEventPage = () => {
       return;
     }
 
-    const rating = parseFloat(data.rating as unknown as string);
-    const discount = parseFloat(data.discount as unknown as string);
-    const price = parseFloat(data.price as unknown as string);
-    const slots = parseInt(data.slots as unknown as string);
-    const bookedSlots = parseInt(data.bookedSlots as unknown as string);
-
-    if (
-      isNaN(rating) ||
-      isNaN(discount) ||
-      isNaN(price) ||
-      isNaN(slots) ||
-      isNaN(bookedSlots)
-    ) {
-      alert(
-        "Please provide valid numeric values for rating, discount, price, slots and bookedSlots"
-      );
-      return;
-    }
-
     const discountPrice =
       parseFloat(data.price) * (parseFloat(data.discount) / 100);
     const updatedPrice = parseFloat(data.price) - discountPrice;
-    const file = data.image[0];
-    const imageBase64 = await toBase64(file); // ✅ Await here
+    let imageBase64 = data.image;
+    if (
+      data.image instanceof FileList &&
+      data.image.length > 0 &&
+      data.image instanceof Blob
+    ) {
+      const file = data.image[0];
+      imageBase64 = await toBase64(file); // ✅ Await here
+    }
 
     const newEvent = {
       id: crypto.randomUUID(),
@@ -90,16 +80,16 @@ const CreateEventPage = () => {
       // storedEvents.push(newEvent); // ✅ Use newEvent, not FormData
       // localStorage.setItem("events", JSON.stringify(storedEvents));
       // alert("Event added successfully");
-      toast.success("Event updated successfully!");
+      toast.success("Event added successfully!");
       router.push("/events");
     } else {
       console.error("Failed to add event.");
     }
   };
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4 mt-20">
       <div className="bg-white p-8 shadow-md rounded-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-yellow-700">
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">
           Create Event
         </h2>
 
@@ -150,6 +140,17 @@ const CreateEventPage = () => {
               {...register("rating", {
                 min: { value: 0, message: "Rating can't be less than 0" },
                 max: { value: 5, message: "Rating can't be more than 5" },
+                validate: (value) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Rating must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Rating must be greater than or equal to 0";
+                  }
+                  return true;
+                },
               })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -188,7 +189,19 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Discount in (%)</label>
             <input
-              {...register("discount")}
+              {...register("discount", {
+                validate: (value: string) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Discount must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Discount must be greated or equal to zero";
+                  }
+                  return true;
+                },
+              })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -201,7 +214,19 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Price</label>
             <input
-              {...register("price")}
+              {...register("price", {
+                validate: (value: string) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Price must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Price must be greated or equal to zero";
+                  }
+                  return true;
+                },
+              })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -217,6 +242,17 @@ const CreateEventPage = () => {
               {...register("slots", {
                 min: { value: 0, message: "Slots can't be less than 0" },
                 max: { value: 5000, message: "Slots can't be more than 5000" },
+                validate: (value: string) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Slots must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Slots must be less than or equal to zero";
+                  }
+                  return true;
+                },
               })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -230,7 +266,19 @@ const CreateEventPage = () => {
           <div>
             <label className="block text-sm font-medium">Booked Slots</label>
             <input
-              {...register("bookedSlots")}
+              {...register("bookedSlots", {
+                validate: (value: string) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Book slots must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Book slots can't have negative value";
+                  }
+                  return true;
+                },
+              })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -243,7 +291,7 @@ const CreateEventPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-yellow-500 text-white font-semibold py-2 rounded-md hover:bg-yellow-600"
+            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-500"
           >
             Create Event
           </button>

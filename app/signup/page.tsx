@@ -28,9 +28,9 @@ const SignupPage = () => {
   };
 
   return (
-    <section className="h-full flex items-center justify-center bg-gray-100 px-4">
+    <section className="h-full flex items-center justify-center bg-gray-100 px-4 mt-24">
       <div className="bg-white p-8 shadow-md rounded-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-yellow-700">
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
           Sign Up
         </h2>
 
@@ -65,12 +65,15 @@ const SignupPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-yellow-500 text-white font-semibold py-2 rounded-md hover:bg-yellow-600"
+            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-500"
           >
             Signup
           </button>
           <p>
-            Do not have an account? <Link href="/login">Login</Link>
+            Do not have an account?{" "}
+            <Link href="/login" className="text-blue-700">
+              Login
+            </Link>
           </p>
         </form>
       </div>

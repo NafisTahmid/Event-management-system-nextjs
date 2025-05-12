@@ -4,7 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Event, updateEvent } from "@/utils/events";
 import { useForm } from "react-hook-form";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export default function EditEventPage() {
   const router = useRouter();
@@ -29,7 +29,9 @@ export default function EditEventPage() {
     // setValue,
     reset,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    mode: "onTouched",
+  });
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -73,27 +75,13 @@ export default function EditEventPage() {
     let updatedImage = eventData.image;
 
     // Handle image file if a new one is uploaded
-    if (data.image instanceof FileList && data.image.length > 0) {
+    if (
+      data.image instanceof FileList &&
+      data.image.length > 0 &&
+      data.image instanceof Blob
+    ) {
       const file = data.image[0];
       updatedImage = await toBase64(file); // ✅ Await here
-    }
-    const rating = parseFloat(data.rating as unknown as string);
-    const discount = parseFloat(data.discount as unknown as string);
-    const price = parseFloat(data.price as unknown as string);
-    const slots = parseInt(data.slots as unknown as string);
-    const bookedSlots = parseInt(data.bookedSlots as unknown as string);
-
-    if (
-      isNaN(rating) ||
-      isNaN(discount) ||
-      isNaN(price) ||
-      isNaN(slots) ||
-      isNaN(bookedSlots)
-    ) {
-      alert(
-        "Please provide valid numeric values for rating, discount, price, slots and bookedSlots"
-      );
-      return;
     }
 
     const updated: Event = {
@@ -165,6 +153,18 @@ export default function EditEventPage() {
               {...register("rating", {
                 min: { value: 0, message: "Rating can't be less than 0" },
                 max: { value: 5, message: "Rating can't be more than 5" },
+
+                validate: (value) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Rating must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Rating must be greater than or equal to 0";
+                  }
+                  return true;
+                },
               })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -203,7 +203,19 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Discount</label>
             <input
-              {...register("discount")}
+              {...register("discount", {
+                validate: (value) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Discount must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Discount must be greater than or equal to 0";
+                  }
+                  return true;
+                },
+              })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -216,7 +228,19 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Price</label>
             <input
-              {...register("price")}
+              {...register("price", {
+                validate: (value) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Price must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Price must be greater than or equal to 0";
+                  }
+                  return true;
+                },
+              })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
@@ -232,6 +256,17 @@ export default function EditEventPage() {
               {...register("slots", {
                 min: { value: 0, message: "Slots can't be less than 0" },
                 max: { value: 5000, message: "Slots can't be more than 5000" },
+                validate: (value) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Slots must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Slots must be greater than or equal to 0";
+                  }
+                  return true;
+                },
               })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -245,7 +280,19 @@ export default function EditEventPage() {
           <div>
             <label className="block text-sm font-medium">Booked Slots</label>
             <input
-              {...register("bookedSlots")}
+              {...register("bookedSlots", {
+                validate: (value) => {
+                  if (value === "") return true;
+                  const parsed = parseFloat(value);
+                  if (!/^\d+(\.\d+)?$/.test(value)) {
+                    return "Booked slots must be a valid number";
+                  }
+                  if (parsed < 0) {
+                    return "Booked slots must be greater than or equal to 0";
+                  }
+                  return true;
+                },
+              })}
               type="text"
               className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />

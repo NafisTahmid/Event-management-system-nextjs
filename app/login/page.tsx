@@ -32,9 +32,9 @@ const LoginPage = () => {
   };
 
   return (
-    <section className="h-full flex items-center justify-center bg-gray-100 px-4">
+    <section className="h-full flex items-center justify-center bg-gray-100 px-4 mt-24">
       <div className="bg-white p-8 shadow-md rounded-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-yellow-700">
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
           Login
         </h2>
 
@@ -69,13 +69,20 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-yellow-500 text-white font-semibold py-2 rounded-md hover:bg-yellow-600"
+            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-yellow-600"
           >
             Log In
           </button>
         </form>
         <p>
-          Already have an account? <Link href="/signup">Sign up</Link>
+          Already have an account?{" "}
+          <Link
+            href="/signup"
+            className="text-blue-700"
+            onClick={() => logout()}
+          >
+            Sign up
+          </Link>
         </p>
       </div>
     </section>
