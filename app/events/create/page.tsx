@@ -46,11 +46,7 @@ const CreateEventPage = () => {
       parseFloat(data.price) * (parseFloat(data.discount) / 100);
     const updatedPrice = parseFloat(data.price) - discountPrice;
     let imageBase64 = data.image;
-    if (
-      data.image instanceof FileList &&
-      data.image.length > 0 &&
-      data.image instanceof Blob
-    ) {
+    if (data.image instanceof FileList && data.image.length > 0) {
       const file = data.image[0];
       imageBase64 = await toBase64(file); // ✅ Await here
     }

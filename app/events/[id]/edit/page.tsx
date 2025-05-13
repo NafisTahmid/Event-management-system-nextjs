@@ -75,11 +75,7 @@ export default function EditEventPage() {
     let updatedImage = eventData.image;
 
     // Handle image file if a new one is uploaded
-    if (
-      data.image instanceof FileList &&
-      data.image.length > 0 &&
-      data.image instanceof Blob
-    ) {
+    if (data.image instanceof FileList && data.image.length > 0) {
       const file = data.image[0];
       updatedImage = await toBase64(file); // ✅ Await here
     }

@@ -395,7 +395,7 @@ const NavbarTwo = () => {
                 <Link
                   href="/events"
                   className={`${
-                    pathname === "/" ? "bg-black" : ""
+                    pathname === "/events" ? "bg-black" : ""
                   } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
                   Home
@@ -403,20 +403,36 @@ const NavbarTwo = () => {
                 <Link
                   href="/events/allEvents"
                   className={`${
-                    pathname === "/properties" ? "bg-black" : ""
+                    pathname === "/events/allEvents" ? "bg-black" : ""
                   } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                 >
                   Events
                 </Link>
+
                 {isLoggedIn && (
-                  <Link
-                    href="/events/create"
-                    className={`${
-                      pathname === "/events/create" ? "bg-black" : ""
-                    } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
-                  >
-                    Add Event
-                  </Link>
+                  <>
+                    <Link
+                      href="/events/bookings"
+                      className={`${
+                        pathname === "/events/bookings" ? "bg-black" : ""
+                      } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                    >
+                      My Bookings
+                    </Link>
+                    <Link
+                      href="/events/create"
+                      className={`${
+                        pathname === "/events/create" ? "bg-black" : ""
+                      } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                    >
+                      Add Event
+                    </Link>
+                    <input
+                      placeholder="search event"
+                      className="bg-white py-4 ms-2"
+                    />
+                    <button className="btn btn-success">Success</button>
+                  </>
                 )}
               </div>
             </div>

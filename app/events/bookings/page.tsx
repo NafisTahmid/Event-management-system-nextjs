@@ -28,7 +28,7 @@ const UserBookings = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-4xl font-extrabold text-center text-yellow-600 mb-10">
+      <h2 className="text-4xl font-extrabold text-center text-blue-600 mb-10">
         My Booked Events
       </h2>
 
@@ -57,7 +57,7 @@ const UserBookings = () => {
               <p className="text-gray-500 text-sm mb-4">📅 {event.date}</p>
 
               <Link href={`/events/event-details/${event.id}`}>
-                <span className="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md text-sm font-medium transition">
+                <span className="inline-block bg-blue-700 hover:bg-yellow-600 text-white px-4 py-2 rounded-md text-sm font-medium transition">
                   View Details
                 </span>
               </Link>

@@ -7,7 +7,7 @@ import { getCurrentUser } from "@/utils/auth";
 import Link from "next/link";
 import { toast } from "react-toastify";
 
-import type { Event } from "@/utils/events"; // Optional, depending on your structure
+import type { Event } from "@/utils/events";
 import Image from "next/image";
 
 const EventDetails = () => {
@@ -39,23 +39,6 @@ const EventDetails = () => {
     fetchEvent();
   }, [params, router]);
 
-  // const handleDelete = async (id: string) => {
-  //   const confirmDelete = confirm(
-  //     "Are you sure you want to delete this event?"
-  //   );
-  //   if (confirmDelete) {
-  //     const response = await fetch(`/api/events/${id}`, {
-  //       method: "DELETE",
-  //     });
-  //     if (response.ok) {
-  //       // deleteEvent(id);
-  //       toast.success("Event deleted successfully");
-  //       router.push("/events");
-  //     }
-  //   } else {
-  //     alert("Failed to delete");
-  //   }
-  // };
   const handleDelete = async (id: string) => {
     const response = await fetch(`/api/events/${id}`, {
       method: "DELETE",
@@ -79,12 +62,6 @@ const EventDetails = () => {
     setIsBooked(true);
     setMessage("✅ Successfully booked this event!");
     router.push("/events/bookings");
-
-    // const updatedEvents = getEvents();
-    // const updatedEvent = updatedEvents.find((e) => e.id === eventData.id);
-    // if (updatedEvent) {
-    //   setEventData(updatedEvent);
-    // }
   };
 
   if (!eventData) {
@@ -102,7 +79,7 @@ const EventDetails = () => {
 
   return (
     <div className="max-w-2xl mx-auto py-20 px-4 md:px-0">
-      <h1 className="text-4xl md:text-5xl font-bold text-center text-yellow-600 mb-10">
+      <h1 className="text-4xl md:text-5xl font-bold text-center text-blue-600 mb-10">
         {eventData.title}
       </h1>
 
@@ -166,7 +143,7 @@ const EventDetails = () => {
             className={`w-full py-3 px-6 rounded-lg text-white font-semibold transition duration-300 ${
               isBooked || availableSlots === 0
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-yellow-600 hover:bg-yellow-500"
+                : "bg-blue-600 hover:bg-blue-500"
             }`}
           >
             {isBooked
