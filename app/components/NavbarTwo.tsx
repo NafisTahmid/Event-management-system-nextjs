@@ -382,7 +382,7 @@ const NavbarTwo = () => {
         {/* Middle - Logo and Navigation Links */}
         <div className="flex flex-1 justify-center">
           <div className="flex items-center space-x-6">
-            <Link className="flex items-center" href="/">
+            <Link className="flex items-center" href="/events">
               <Image className="h-10 w-auto" src={Logo} alt="Accel Events" />
               <span className="hidden md:block text-white text-2xl font-bold ml-2">
                 Accel Events
@@ -401,7 +401,7 @@ const NavbarTwo = () => {
                   Home
                 </Link>
                 <Link
-                  href="/events"
+                  href="/events/allEvents"
                   className={`${
                     pathname === "/properties" ? "bg-black" : ""
                   } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}

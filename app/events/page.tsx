@@ -47,9 +47,6 @@ export default function EventsPage() {
   const [userEvents, setUserEvents] = useState<Event[]>([]);
   const [isSideBarOpen, setIsSidebarOpen] = useState(false);
 
-  const topEvents = eventsArray.slice(0, 3);
-  console.log(topEvents);
-
   const toggleSidebarOpen = () => {
     setIsSidebarOpen(true);
   };
@@ -108,6 +105,8 @@ export default function EventsPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const slicedEvents = events.slice(0, 3);
+
   const toggleChat = () => setIsChatOpen(!isChatOpen);
   const toggleChatTwo = () => setIsChatOpenTwo(!isChatOpenTwo);
 
@@ -143,19 +142,20 @@ export default function EventsPage() {
       <section className="md:h-full flex items-center text-gray-600">
         <div className="container px-5 py-10 mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl text-yellow-700 font-semibold pb-2">
+            {/* <h1 className="text-4xl md:text-6xl text-blue-700 font-semibold pb-2 mt-20">
               Accelx Recent Events
-            </h1>
-            <h5 className="text-base md:text-4xl text-blue-600 mt-20">
+            </h1> */}
+            <h5 className="text-base md:text-4xl text-blue-700 mt-20 font-bold">
               Our top rated Events
             </h5>
           </div>
-          {topEvents.map((te) => (
-            <Carousel image={te.image} />
-          ))}
+          <Carousel />
 
+          <h2 className="font-bold text-3xl mt-16 ms-8 inline-block text-blue-700">
+            Top Events
+          </h2>
           <div className="flex flex-wrap m-4">
-            {events.map((event) => (
+            {slicedEvents.map((event) => (
               <div key={event.id} className="p-4 sm:w-1/2 lg:w-1/3">
                 <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                   <img
@@ -163,8 +163,8 @@ export default function EventsPage() {
                     alt="event"
                     className="lg:h-72 md:h-48 w-full object-cover object-center"
                   />
-                  <div className="p-6 hover:bg-indigo-700 hover:text-white transition duration-300 ease-in">
-                    <h2 className="text-yellow-600 font-medium mb-1 text-2xl">
+                  <div className="p-6 hover:bg-gray-900 hover:text-white transition duration-300 ease-in">
+                    <h2 className="text-blue-600 font-medium mb-1 text-2xl">
                       {event.title}
                     </h2>
                     <p>
@@ -173,7 +173,7 @@ export default function EventsPage() {
                     <div className="flex items-center flex-wrap">
                       <Link
                         href={`/events/event-details/${event.id}`}
-                        className="text-yellow-600 inline-flex items-center"
+                        className="text-blue-700 inline-flex items-center"
                       >
                         Learn more
                       </Link>
@@ -307,7 +307,7 @@ export default function EventsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 100 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-13 right-4 z-50"
+              className="fixed top-30 right-4 z-50"
             >
               <Button
                 onClick={toggleChatTwo}
@@ -333,7 +333,7 @@ export default function EventsPage() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-20 right-4 z-50 w-[95%] md:w-[500px]"
+              className="fixed top-40 right-4 z-50 w-[95%] md:w-[500px]"
             >
               <Card className="border-2">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
@@ -440,6 +440,14 @@ export default function EventsPage() {
           </div>
         </div>
       )}
+      <section className="m-auto max-w-lg mt-2 px-6">
+        <Link
+          href="/events/allEvents"
+          className="block bg-blue-700 text-white text-center py-4 px-6 rounded-xl hover:bg-blue-600"
+        >
+          View All Events
+        </Link>
+      </section>
     </>
   );
 }
