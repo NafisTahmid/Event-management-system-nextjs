@@ -1,15 +1,77 @@
+"use client";
 import events from "@/data/events.json";
 import Link from "next/link";
+import { useState } from "react";
+
 const AllEventsPage = () => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [filteredEvents, setFilteredEvents] = useState(events);
+
+  // Get unique categories
+  const categories = ["All", ...new Set(events.map((event) => event.category))];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const filtered =
+      selectedCategory === "All"
+        ? events
+        : events.filter((event) => event.category === selectedCategory);
+
+    setFilteredEvents(filtered);
+  };
+
   return (
-    <>
+    <div className="p-4">
+      <div className="flex justify-end">
+        <form className="mb-6 mt-20 ms-10">
+          <label className="block mb-2 font-medium">Select Category:</label>
+          <select
+            value={selectedCategory}
+            onChange={(e) => {
+              const value = e.target.value;
+              setSelectedCategory(value);
+              const filtered =
+                value === "All"
+                  ? events
+                  : events.filter((event) => event.category === value);
+              setFilteredEvents(filtered);
+            }}
+            className="p-2 border border-gray-300 rounded mr-4"
+          >
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </form>
+      </div>
+      {/* Category Filter Form */}
+
+      {/* Render Events */}
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {filteredEvents.map((event) => (
+          <div
+            key={event.id}
+            className="border p-4 rounded shadow hover:bg-gray-700 transition"
+          >
+            <img
+              src={event.image}
+              alt={event.title}
+              className="w-full h-48 object-cover rounded mb-4"
+            />
+            <h3 className="text-xl font-semibold">{event.title}</h3>
+            <p className="text-gray-600">{event.category}</p>
+          </div>
+        ))}
+      </div> */}
       <div className="max-w-6xl mx-auto px-4 py-8">
         <h2 className="text-4xl font-extrabold text-center text-blue-600 mb-10">
-          All Events
+          Events ({selectedCategory.toUpperCase()})
         </h2>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <div
               key={event.id}
               className="bg-white shadow-xl rounded-2xl overflow-hidden transform hover:scale-105 transition duration-300"
@@ -42,7 +104,7 @@ const AllEventsPage = () => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
